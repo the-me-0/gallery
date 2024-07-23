@@ -1,4 +1,4 @@
-import {NextRequest, NextResponse} from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import streamFile from '@/lib/stream-file';
 import { sanitizeMultipleStrings } from '@/lib/sanitize-string';
 

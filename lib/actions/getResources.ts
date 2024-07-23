@@ -1,7 +1,12 @@
 'use server';
 
-import { imageExtensions, Resource, ResourceType, videoExtensions } from '@/lib/types';
-import {promises as fs } from 'fs';
+import {
+  imageExtensions,
+  Resource,
+  ResourceType,
+  videoExtensions,
+} from '@/lib/types';
+import { promises as fs } from 'fs';
 import path from 'path';
 
 const getResourceType = (extension: string): ResourceType | null => {
@@ -14,7 +19,10 @@ const getResourceType = (extension: string): ResourceType | null => {
   return null;
 };
 
-const indexDirectory = async (dirPath: string, isPrivate: boolean): Promise<Array<Resource>> => {
+const indexDirectory = async (
+  dirPath: string,
+  isPrivate: boolean
+): Promise<Array<Resource>> => {
   let resources: Resource[] = [];
 
   const files: Array<string> = await fs.readdir(dirPath);
@@ -40,12 +48,12 @@ const indexDirectory = async (dirPath: string, isPrivate: boolean): Promise<Arra
   }
 
   return resources;
-}
+};
 
 const getResources = async (): Promise<Array<Resource>> => {
   const publicResources = await indexDirectory('resources/', false);
   const privateResources = await indexDirectory('resources-private/', true);
   return [...publicResources, ...privateResources];
-}
+};
 
 export default getResources;
