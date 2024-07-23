@@ -17,9 +17,10 @@ export default function Home() {
           >
             By{' '}
             <Image
-              src='/vercel.svg'
+              src='/resources/dossier_test/test.png'
               alt='Vercel Logo'
               className='dark:invert'
+              unoptimized={true}
               width={100}
               height={24}
               priority
