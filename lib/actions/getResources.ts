@@ -42,6 +42,7 @@ const indexDirectory = async (
           type,
           location: filePath,
           private: isPrivate,
+          title: '', // TODO: replace empty title by file name
         });
       }
     }

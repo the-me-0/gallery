@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 interface Props {
-  src: HTMLImageElement;
+  src: string | HTMLImageElement;
   alt: string;
 }
 

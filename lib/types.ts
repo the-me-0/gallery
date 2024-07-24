@@ -4,6 +4,7 @@ interface Resource {
   type: ResourceType;
   location: string;
   private: boolean;
+  title: string;
 }
 
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];

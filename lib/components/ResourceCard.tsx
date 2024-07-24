@@ -3,6 +3,7 @@
 import { JSX, useEffect, useState } from 'react';
 import { ResourceType } from '@/lib/types';
 import { GImage } from '@/lib/components/GImage';
+import { useModal } from '@/hooks/use-modal-store';
 
 interface Props {
   src: string;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const ResourceCard = ({src, alt, type, title}: Props): JSX.Element | null => {
+  const { onOpen } = useModal();
+
   const [aspectRatio, setAspectRatio] = useState<string>('1 / 1');
   const [img, setImg] = useState<HTMLImageElement | null>(null);
 
@@ -30,8 +33,13 @@ const ResourceCard = ({src, alt, type, title}: Props): JSX.Element | null => {
 
   if (!img) return null;
 
+  // TODO: when adding video support, the onClick that sends to the IMAGE modal will be wrong. or at least send type too
+
   return (
-    <div className="card bg-base-100 box-border h-fit max-h-64 my-auto">
+    <div
+      className="card bg-base-100 box-border h-fit max-h-64 my-auto"
+      onClick={() => onOpen('image', { image: { src: img, title, ratio: aspectRatio } })}
+    >
       <figure className='relative' style={{ aspectRatio }}>
         {type === 'image' && <GImage src={img} alt={alt} />}
         {/*type === 'video' && <Image src={src} alt={alt} />*/}
