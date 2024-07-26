@@ -4,7 +4,7 @@ import { Resource } from '@/lib/types';
 export type ModalType = 'image';
 
 interface ModalData {
-  image?: { src: HTMLImageElement, title: string, ratio: string };
+  image?: { src: HTMLImageElement, title: string };
 }
 
 interface ModalStore {

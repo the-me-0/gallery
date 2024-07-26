@@ -10,4 +10,12 @@ interface Resource {
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
 const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
 
-export { type ResourceType, type Resource, imageExtensions, videoExtensions };
+type PreferenceSetting = 'gridResourceLayout' | 'columnResourceLayout';
+
+export {
+  type ResourceType,
+  type Resource,
+  imageExtensions,
+  videoExtensions,
+  type PreferenceSetting,
+};

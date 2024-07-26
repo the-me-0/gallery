@@ -4,7 +4,11 @@ const Navbar = (): JSX.Element => {
   return (
     <div className="navbar bg-base-200">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl text-neutral">Gallery</a>
+        <a
+          className="btn btn-ghost text-4xl text-neutral font-sacramento"
+        >
+          Gallery
+        </a>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

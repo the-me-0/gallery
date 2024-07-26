@@ -16,6 +16,9 @@ const config: Config = {
       screens: {
         'xs': '475px',
       },
+      fontFamily: {
+        sacramento: ["Sacramento", "regular"],
+      },
     },
   },
   daisyui: {

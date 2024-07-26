@@ -42,7 +42,7 @@ const indexDirectory = async (
           type,
           location: filePath,
           private: isPrivate,
-          title: '', // TODO: replace empty title by file name
+          title: file.substring(0, file.lastIndexOf('.')),
         });
       }
     }
@@ -50,6 +50,9 @@ const indexDirectory = async (
 
   return resources;
 };
+
+// TODO: files that are added using indexation script can have unauthorized text elements.
+// example : "(". FIX : files that are considered to have an unsafe name can be renamed with admin panel ?
 
 const getResources = async (): Promise<Array<Resource>> => {
   const publicResources = await indexDirectory('resources/', false);
