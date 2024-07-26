@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import streamFile from '@/lib/stream-file';
 import { sanitizeMultipleStrings } from '@/lib/sanitize-string';
+import mime from 'mime';
 
 export async function GET(
   req: NextRequest,
@@ -20,11 +21,17 @@ export async function GET(
     const file = `resources-private/${params.fileRoute.join('/')}`;
     const data: ReadableStream<Uint8Array> = streamFile(file);
 
+    // define mime type
+    let mimeType = mime.getType(file);
+    if (!mimeType) {
+      mimeType = 'application/octet-stream';
+    }
+
     return new NextResponse(data, {
       status: 200,
       headers: new Headers({
         'Content-Encoding': 'gzip',
-        'content-type': 'application/octet-stream',
+        'content-type': mimeType,
         'cache-control': 'public, max-age=31536000, immutable',
       }),
     });
