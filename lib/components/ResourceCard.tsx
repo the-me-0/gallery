@@ -6,22 +6,23 @@ import { GImage } from '@/lib/components/GImage';
 import { useModal } from '@/hooks/use-modal-store';
 
 interface Props {
-  src: string;
+  fullImage: string;
+  thumbnailImage: string;
   type: ResourceType;
   title: string;
 }
 
-const ResourceCard = ({src, type, title}: Props): JSX.Element | null => {
+const ResourceCard = ({fullImage, thumbnailImage, type, title}: Props): JSX.Element | null => {
   const { onOpen } = useModal();
   const [img, setImg] = useState<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const img = new window.Image();
-    img.src = src;
+    img.src = thumbnailImage;
     img.onload = () => {
       setImg(img);
     };
-  }, [src]);
+  }, [thumbnailImage]);
 
   if (!img) return null;
 
@@ -30,7 +31,7 @@ const ResourceCard = ({src, type, title}: Props): JSX.Element | null => {
   return (
     <div
       className="card bg-base-100 box-border h-fit max-h-64 my-auto"
-      onClick={() => onOpen('image', { image: { src: img, title } })}
+      onClick={() => onOpen('image', { image: { fullImage, title } })}
     >
       <figure className='relative' style={ img.width/img.height > 4/3 ? { aspectRatio: '4/3' } : { aspectRatio: `${img.width}/${img.height}` } }>
         {type === 'image' && <GImage src={img} alt={title} />}

@@ -12,7 +12,7 @@ export default async function Home() {
       <FilterPanel />
       <div className='grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4 p-4 h-64'>
         {resources.map((resource) => (
-          <ResourceCard src={resource.location} type={resource.type} title={resource.title} key={resource.title} />
+          <ResourceCard fullImage={resource.fullImage} thumbnailImage={resource.thumbnailImage} type={resource.type} title={resource.title} key={resource.title} />
         ))}
       </div>
     </main>

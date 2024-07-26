@@ -8,6 +8,7 @@ import {
 } from '@/lib/types';
 import { promises as fs } from 'fs';
 import path from 'path';
+import generateThumbnail from '@/lib/actions/generateThumbnail';
 
 const getResourceType = (extension: string): ResourceType | null => {
   if (imageExtensions.includes(extension)) {
@@ -37,10 +38,13 @@ const indexDirectory = async (
       const extension = path.extname(file).toLowerCase();
       const type = getResourceType(extension);
 
+      const thumbnailPath = await generateThumbnail(filePath);
+
       if (type) {
         resources.push({
           type,
-          location: filePath,
+          fullImage: filePath,
+          thumbnailImage: thumbnailPath,
           private: isPrivate,
           title: file.substring(0, file.lastIndexOf('.')),
         });

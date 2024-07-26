@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 const ImageModal = () => {
   const { onOpen, isOpen, onClose, type, data } = useModal();
+  const [img, setImg] = useState<HTMLImageElement | null>(null);
   const [ displaySize, setDisplaySize ] = useState({ width: 0, height: 0 });
 
   const isModalOpen = isOpen && type === 'image';
@@ -15,8 +16,20 @@ const ImageModal = () => {
   useEffect(() => {
     if (!data.image) return;
 
-    const imageWidth = data.image!.src.width;
-    const imageHeight = data.image!.src.height;
+    // Set img
+    const img = new window.Image();
+    img.src = data.image.fullImage;
+    img.onload = () => {
+      setImg(img);
+    };
+  }, [data.image]);
+
+  useEffect(() => {
+    if (!img) return;
+
+    // set the good display size (maximize while keeping ratio)
+    const imageWidth = img.width;
+    const imageHeight = img.height;
     const imageRatio = imageWidth / imageHeight;
 
     const windowWidth = window.innerWidth * 0.9; // keep a margin
@@ -28,9 +41,9 @@ const ImageModal = () => {
     } else {
       setDisplaySize({ width: windowWidth, height: windowWidth / imageRatio });
     }
-  }, [data.image]);
+  }, [img]);
 
-  if (!data.image) return null;
+  if (!data.image || !img) return null;
 
   return (
     <dialog className={`modal ${isModalOpen && 'modal-open'}`}>
@@ -40,7 +53,7 @@ const ImageModal = () => {
       >
         <h3 className="font-bold text-lg">{data.image.title}</h3>
         <p className="py-4">Appuie sur echap ou sur le bouton pour quitter</p>
-        <GImage src={data.image.src} alt={data.image.title} />
+        <GImage src={img} alt={data.image.title} />
 
         <div className="modal-action">
           {/* close the modal with button top right */}

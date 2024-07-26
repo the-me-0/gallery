@@ -2,7 +2,8 @@ type ResourceType = 'image' | 'video';
 
 interface Resource {
   type: ResourceType;
-  location: string;
+  fullImage: string;
+  thumbnailImage: string;
   private: boolean;
   title: string;
 }
