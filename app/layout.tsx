@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' data-theme="sleek" className="h-full">
+    <html lang='en' data-theme="vintage" className="h-full">
       <body className={inter.className && "h-full"}>
         <ModalProvider />
         {children}

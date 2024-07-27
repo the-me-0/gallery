@@ -14,7 +14,10 @@ const ImageModal = () => {
   const isModalOpen = isOpen && type === 'image';
 
   useEffect(() => {
-    if (!data.image) return;
+    if (!data.image) {
+      setImg(null);
+      return;
+    }
 
     // Set img
     const img = new window.Image();
@@ -43,7 +46,7 @@ const ImageModal = () => {
     }
   }, [img]);
 
-  if (!data.image || !img) return null;
+  if (!data.image) return null;
 
   return (
     <dialog className={`modal ${isModalOpen && 'modal-open'}`}>
@@ -51,9 +54,19 @@ const ImageModal = () => {
         className={`modal-box p-0 max-w-full max-h-full`}
         style={{ height: displaySize.height, width: displaySize.width }}
       >
-        <h3 className="font-bold text-lg">{data.image.title}</h3>
-        <p className="py-4">Appuie sur echap ou sur le bouton pour quitter</p>
-        <GImage src={img} alt={data.image.title} />
+        <h3
+          className="font-bold text-lg text-primary absolute bottom-0 w-full z-20 bg-base-100 bg-opacity-70 text-center"
+        >
+          {data.image.title}
+        </h3>
+
+        {!img ? (
+          <div className="skeleton h-full w-full"></div>
+        ) : (
+          <>
+            <GImage src={img} alt={data.image.title} />
+          </>
+        )}
 
         <div className="modal-action">
           {/* close the modal with button top right */}
