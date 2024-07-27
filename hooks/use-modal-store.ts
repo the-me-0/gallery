@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { Resource } from '@/lib/types';
 
 export type ModalType = 'image';
 

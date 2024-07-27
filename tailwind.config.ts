@@ -19,6 +19,9 @@ const config: Config = {
       fontFamily: {
         sacramento: ["Sacramento", "regular"],
       },
+      gridTemplateColumns: {
+        'auto-fit': 'repeat(auto-fit, minmax(200px, 1fr))',
+      },
     },
   },
   daisyui: {
