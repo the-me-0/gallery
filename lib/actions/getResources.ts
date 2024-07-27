@@ -29,6 +29,8 @@ const indexDirectory = async (
   const files: Array<string> = await fs.readdir(dirPath);
 
   for (const file of files) {
+    if (file.startsWith('.')) continue;
+
     const filePath = path.join(dirPath, file);
     const stat = await fs.stat(filePath);
 
