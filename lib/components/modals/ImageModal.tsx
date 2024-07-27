@@ -4,10 +4,8 @@ import { useModal } from '@/hooks/use-modal-store';
 import { GImage } from '@/lib/components/GImage';
 import { useEffect, useState } from 'react';
 
-// TODO: make the text absolute and show at the bottom on semi-transparent black bg
-
 const ImageModal = () => {
-  const { onOpen, isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const [img, setImg] = useState<HTMLImageElement | null>(null);
   const [ displaySize, setDisplaySize ] = useState({ width: 0, height: 0 });
 

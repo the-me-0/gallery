@@ -4,15 +4,17 @@ import { JSX, useEffect, useState } from 'react';
 import { ResourceType } from '@/lib/types';
 import { GImage } from '@/lib/components/GImage';
 import { useModal } from '@/hooks/use-modal-store';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
   fullImage: string;
   thumbnailImage: string;
   type: ResourceType;
   title: string;
+  className?: string;
 }
 
-const ResourceCard = ({fullImage, thumbnailImage, type, title}: Props): JSX.Element | null => {
+const ResourceCard = ({fullImage, thumbnailImage, type, title, className}: Props): JSX.Element | null => {
   const { onOpen } = useModal();
   const [img, setImg] = useState<HTMLImageElement | null>(null);
 
@@ -30,7 +32,7 @@ const ResourceCard = ({fullImage, thumbnailImage, type, title}: Props): JSX.Elem
 
   return (
     <div
-      className="card bg-base-100 box-border h-fit max-h-64 my-auto"
+      className={twMerge('card bg-base-100 box-border h-fit max-h-64 my-auto', className)}
       onClick={() => onOpen('image', { image: { fullImage, title } })}
     >
       <figure className='relative' style={ img.width/img.height > 4/3 ? { aspectRatio: '4/3' } : { aspectRatio: `${img.width}/${img.height}` } }>

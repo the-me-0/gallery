@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import ModalProvider from '@/lib/components/providers/ModalProvider';
+import { Navbar } from '@/lib/components/Navbar';
+import PreferencesProvider from '@/lib/components/providers/PreferencesProvider';
+import React from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +22,10 @@ export default function RootLayout({
     <html lang='en' data-theme="vintage" className="h-full">
       <body className={inter.className && "h-full"}>
         <ModalProvider />
-        {children}
+        <Navbar />
+        <PreferencesProvider>
+          {children}
+        </PreferencesProvider>
       </body>
     </html>
   );
