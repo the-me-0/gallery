@@ -30,7 +30,7 @@ export async function GET(
       headers: new Headers({
         'Content-Encoding': 'gzip',
         'content-type': mimeType,
-        'cache-control': 'public, max-age=31536000, immutable',
+        'cache-control': 'public, max-age=604800, immutable',
       }),
     });
   } catch (error) {
