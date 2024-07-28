@@ -8,7 +8,7 @@ const ImageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [img, setImg] = useState<HTMLImageElement | null>(null);
   const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
-  const [titleDisplay, setTitleDisplay] = useState<boolean>(true);
+  const [titleDisplay, setTitleDisplay] = useState<{ active: boolean, forced: boolean }>({ active: true, forced: false });
 
   const isModalOpen = isOpen && type === 'image';
 
@@ -25,7 +25,7 @@ const ImageModal = () => {
       setImg(img);
     };
 
-    return () => setTitleDisplay(true);
+    return () => setTitleDisplay({ active: true, forced: false });
   }, [data.image]);
 
   useEffect(() => {
@@ -54,14 +54,16 @@ const ImageModal = () => {
       <div
         className={`modal-box p-0 max-w-full max-h-full group`}
         style={{ height: displaySize.height, width: displaySize.width }}
-        onTouchStart={() => setTitleDisplay(!titleDisplay)}
+        onTouchStart={() => setTitleDisplay({active: !titleDisplay.active, forced: true})}
+        onPointerLeave={() => !titleDisplay.forced && setTitleDisplay({active: false, forced: false})}
       >
         <h3
           className={`
-          font-bold text-lg text-primary transition
-          duration-200 absolute bottom-0 w-full z-20
-          bg-base-100 bg-opacity-70 text-center opacity-0
-          group-hover:opacity-100 ${titleDisplay && 'opacity-100'}
+            font-bold text-lg text-primary transition
+            duration-200 absolute bottom-0 w-full z-20
+            bg-base-100 bg-opacity-70 text-center opacity-0
+            group-hover:opacity-100
+            ${(titleDisplay.active) && 'opacity-100'}
           `}
         >
           {data.image.title}
@@ -70,9 +72,7 @@ const ImageModal = () => {
         {!img ? (
           <div className="skeleton h-full w-full"></div>
         ) : (
-          <>
-            <GImage src={img} alt={data.image.title} />
-          </>
+          <GImage src={img} alt={data.image.title} />
         )}
 
         <div className="modal-action">
@@ -83,8 +83,9 @@ const ImageModal = () => {
               className={`
                 btn btn-sm btn-circle text-opacity-70
                 border-opacity-70 bg-opacity-20 text-base-100
-                absolute right-2 top-2 opacity-0 group-hover:opacity-100
-                ${titleDisplay && 'opacity-100'}
+                absolute right-2 top-2 opacity-0
+                group-hover:opacity-100
+                ${(titleDisplay.active) && 'opacity-100'}
               `}
             >
               ✕
