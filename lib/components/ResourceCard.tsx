@@ -30,16 +30,18 @@ const ResourceCard = ({fullImage, thumbnailImage, type, title, className}: Props
 
   // TODO: when adding video support, the onClick that sends to the IMAGE modal will be wrong. or at least send type too
 
+  // TODO: make imgs vertically centered on grid layout but big imgs not touch themselves
+
   return (
     <div
-      className={twMerge('card bg-base-100 box-border h-fit max-h-64 my-auto', className)}
+      className={twMerge('card bg-base-100 box-border h-fit max-h-64 my-auto group cursor-pointer', className)}
       onClick={() => onOpen('image', { image: { fullImage, title } })}
     >
-      <figure className='relative' style={ img.width/img.height > 4/3 ? { aspectRatio: '4/3' } : { aspectRatio: `${img.width}/${img.height}` } }>
+      <figure className='relative rounded-b-2xl' style={ img.width/img.height > 4/3 ? { aspectRatio: '4/3' } : { aspectRatio: `${img.width}/${img.height}` } }>
         {type === 'image' && <GImage src={img} alt={title} />}
         {/*type === 'video' && <Image src={src} alt={title} />*/}
       </figure>
-      <div className="card-body p-0 mx-4">
+      <div className="card-body rounded-b-2xl p-0 absolute bottom-0 bg-opacity-65 w-full opacity-0 bg-base-100 group-hover:opacity-100 px-2">
         <p
           className='mx-auto w-fit max-w-full text-nowrap text-primary text-opacity-85 text-ellipsis overflow-hidden'>
           {title}

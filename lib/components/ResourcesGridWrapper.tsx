@@ -20,7 +20,7 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement => {
       if (containerRef.current) {
         // @ts-ignore
         const containerWidth = containerRef.current.offsetWidth;
-        const minColumnWidth = 200; // This should match the minmax value in your CSS
+        const minColumnWidth = 200; // This is the minmax value in the gridTemplateColumns of tailwind config
         const columns = Math.floor(containerWidth / minColumnWidth);
         setColumnCount(columns);
       }
@@ -43,16 +43,13 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement => {
   }, []);
 
   return (
-    <>
-      <div>Current column count: {columnCount}</div>
-      <div className='grid grid-cols-auto-fit' ref={containerRef}>
-        {!preferences.find((pref) => pref.preferenceName === 'gallery-pref_columnResourceLayout')?.value ? (
-            <ResourcesGrid resources={resources} />
-        ) : (
-          <ResourcesColumn resources={resources} columnCount={columnCount} />
-        )}
-      </div>
-    </>
+    <div className='grid grid-cols-auto-fit' ref={containerRef}>
+      {!preferences.find((pref) => pref.preferenceName === 'gallery-pref_columnResourceLayout')?.value ? (
+          <ResourcesGrid resources={resources} />
+      ) : (
+        <ResourcesColumn resources={resources} columnCount={columnCount} />
+      )}
+    </div>
   )
 }
 

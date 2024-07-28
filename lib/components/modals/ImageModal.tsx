@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react';
 const ImageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [img, setImg] = useState<HTMLImageElement | null>(null);
-  const [ displaySize, setDisplaySize ] = useState({ width: 0, height: 0 });
+  const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
+  const [titleDisplay, setTitleDisplay] = useState<boolean>(true);
 
   const isModalOpen = isOpen && type === 'image';
 
@@ -23,6 +24,8 @@ const ImageModal = () => {
     img.onload = () => {
       setImg(img);
     };
+
+    return () => setTitleDisplay(true);
   }, [data.image]);
 
   useEffect(() => {
@@ -49,11 +52,17 @@ const ImageModal = () => {
   return (
     <dialog className={`modal ${isModalOpen && 'modal-open'}`}>
       <div
-        className={`modal-box p-0 max-w-full max-h-full`}
+        className={`modal-box p-0 max-w-full max-h-full group`}
         style={{ height: displaySize.height, width: displaySize.width }}
+        onTouchStart={() => setTitleDisplay(!titleDisplay)}
       >
         <h3
-          className="font-bold text-lg text-primary absolute bottom-0 w-full z-20 bg-base-100 bg-opacity-70 text-center"
+          className={`
+          font-bold text-lg text-primary transition
+          duration-200 absolute bottom-0 w-full z-20
+          bg-base-100 bg-opacity-70 text-center opacity-0
+          group-hover:opacity-100 ${titleDisplay && 'opacity-100'}
+          `}
         >
           {data.image.title}
         </h3>
@@ -69,7 +78,17 @@ const ImageModal = () => {
         <div className="modal-action">
           {/* close the modal with button top right */}
           <form method="dialog">
-            <button onClick={onClose} className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button
+              onClick={onClose}
+              className={`
+                btn btn-sm btn-circle text-opacity-70
+                border-opacity-70 bg-opacity-20 text-base-100
+                absolute right-2 top-2 opacity-0 group-hover:opacity-100
+                ${titleDisplay && 'opacity-100'}
+              `}
+            >
+              ✕
+            </button>
           </form>
         </div>
       </div>

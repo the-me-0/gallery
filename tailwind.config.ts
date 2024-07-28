@@ -2,6 +2,9 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   important: true,
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     './lib/components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -20,7 +23,7 @@ const config: Config = {
         sacramento: ["Sacramento", "regular"],
       },
       gridTemplateColumns: {
-        'auto-fit': 'repeat(auto-fit, minmax(200px, 1fr))',
+        'auto-fit': 'repeat(auto-fit, minmax(200px, 1fr))', // if you change the minmax value, please also change it in resourcesGridWrapper component
       },
     },
   },
