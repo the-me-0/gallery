@@ -40,13 +40,13 @@ const indexDirectory = async (
       const extension = path.extname(file).toLowerCase();
       const type = getResourceType(extension);
 
-      const thumbnailPath = await generateThumbnail(filePath);
-
       if (type) {
+        const thumbnailPath = await generateThumbnail(filePath, type, isPrivate);
+
         resources.push({
           type,
-          fullImage: filePath,
-          thumbnailImage: thumbnailPath,
+          src: filePath,
+          thumbnailSrc: thumbnailPath,
           private: isPrivate,
           title: file.substring(0, file.lastIndexOf('.')),
         });

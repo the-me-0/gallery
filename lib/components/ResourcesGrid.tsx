@@ -11,8 +11,8 @@ const ResourcesGrid = ({ resources }: Props): ReactElement => {
     <>
       {resources.map((resource) => (
         <ResourceCard
-          fullImage={resource.fullImage}
-          thumbnailImage={resource.thumbnailImage}
+          src={resource.src}
+          thumbnailSrc={resource.thumbnailSrc}
           type={resource.type}
           title={resource.title}
           key={resource.title}

@@ -11,6 +11,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "fluent-ffmpeg": "^2.1.3",
     "lucide-react": "^0.416.0",
     "mime": "^4.0.4",
     "next": "14.2.5",
@@ -21,6 +22,7 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.24",
     "@types/node": "^20.14.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -1,51 +1,51 @@
 "use client";
 
 import { useModal } from '@/hooks/use-modal-store';
-import { GImage } from '@/lib/components/GImage';
 import { useEffect, useState } from 'react';
 
-const ImageModal = () => {
+const VideoModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const [img, setImg] = useState<HTMLImageElement | null>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
   const [titleDisplay, setTitleDisplay] = useState<{ active: boolean, forced: boolean }>({ active: true, forced: false });
 
-  const isModalOpen = isOpen && type === 'image';
+  const isModalOpen = isOpen && type === 'video';
 
   useEffect(() => {
     if (!data.content) {
-      setImg(null);
+      setVideoSrc(null);
       return;
     }
 
-    // Set img
-    const img = new window.Image();
-    img.src = data.content.src;
-    img.onload = () => {
-      setImg(img);
-    };
+    // Set video source
+    setVideoSrc(data.content.src);
 
     return () => setTitleDisplay({ active: true, forced: false });
   }, [data.content]);
 
   useEffect(() => {
-    if (!img) return;
+    if (!videoSrc) return;
 
-    // set the good display size (maximize while keeping ratio)
-    const imageWidth = img.width;
-    const imageHeight = img.height;
-    const imageRatio = imageWidth / imageHeight;
+    // Create a video element to get dimensions
+    const video = document.createElement('video');
+    video.src = videoSrc;
 
-    const windowWidth = window.innerWidth * 0.9; // keep a margin
-    const windowHeight = window.innerHeight * 0.9; // keep a margin
+    video.onloadedmetadata = () => {
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
+      const videoRatio = videoWidth / videoHeight;
 
-    if (windowWidth / windowHeight > imageRatio) {
-      // La fenêtre est plus large par rapport à sa hauteur
-      setDisplaySize({ width: windowHeight * imageRatio, height: windowHeight });
-    } else {
-      setDisplaySize({ width: windowWidth, height: windowWidth / imageRatio });
-    }
-  }, [img]);
+      const windowWidth = window.innerWidth * 0.9; // keep a margin
+      const windowHeight = window.innerHeight * 0.9; // keep a margin
+
+      if (windowWidth / windowHeight > videoRatio) {
+        // The window is wider compared to its height
+        setDisplaySize({ width: windowHeight * videoRatio, height: windowHeight });
+      } else {
+        setDisplaySize({ width: windowWidth, height: windowWidth / videoRatio });
+      }
+    };
+  }, [videoSrc]);
 
   if (!data.content) return null;
 
@@ -54,8 +54,8 @@ const ImageModal = () => {
       <div
         className={`modal-box p-0 max-w-full max-h-full group`}
         style={{ height: displaySize.height, width: displaySize.width }}
-        onTouchStart={() => setTitleDisplay({active: !titleDisplay.active, forced: true})}
-        onPointerLeave={() => !titleDisplay.forced && setTitleDisplay({active: false, forced: false})}
+        onTouchStart={() => setTitleDisplay({ active: !titleDisplay.active, forced: true })}
+        onPointerLeave={() => !titleDisplay.forced && setTitleDisplay({ active: false, forced: false })}
       >
         <h3
           className={`
@@ -69,10 +69,15 @@ const ImageModal = () => {
           {data.content.title}
         </h3>
 
-        {!img ? (
+        {!videoSrc ? (
           <div className="skeleton h-full w-full"></div>
         ) : (
-          <GImage src={img} alt={data.content.title} />
+          <video
+            src={videoSrc}
+            controls
+            autoPlay
+            style={{ width: '100%', height: '100%' }}
+          />
         )}
 
         <div className="modal-action">
@@ -99,7 +104,7 @@ const ImageModal = () => {
         <button onClick={onClose}>close</button>
       </form>
     </dialog>
-  )
+  );
 }
 
-export { ImageModal };
+export { VideoModal };
