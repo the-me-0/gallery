@@ -15,8 +15,9 @@ export async function GET(
     //   return new NextResponse('Unauthorized', {status: 401});
     // }
 
+    const { fileRoute } = await params;
     // remove any non-alphanumeric characters from the imageName, while keeping the dots, dashes, and underscores
-    params.fileRoute = sanitizeMultipleStrings(params.fileRoute);
+    params.fileRoute = sanitizeMultipleStrings(fileRoute);
 
     const file = `resources-thumbnails/${params.fileRoute.join('/')}`;
     const extension = path.extname(file).toLowerCase();
