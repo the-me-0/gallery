@@ -14,4 +14,6 @@ const GImage = forwardRef((props: Props, ref): ReactElement => {
   );
 });
 
+GImage.displayName = 'GImage';
+
 export { GImage };

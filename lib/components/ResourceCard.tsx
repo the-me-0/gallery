@@ -31,15 +31,19 @@ const ResourceCard = ({src, thumbnailSrc, type, title, className}: Props): JSX.E
       let canvasElement = document.createElement('canvas');
       let w = canvasElement.width = img.current.naturalWidth;
       let h = canvasElement.height = img.current.naturalHeight;
-      canvasElement.getContext('2d')?.drawImage(img.current, 0, 0, w, h);
-      try {
-        img.current.src = canvasElement.toDataURL("image/gif"); // if possible, retain all css aspects
-      } catch(e) { // cross-domain -- mimic original with all its tag attributes
-        for (let j = 0, a; a = img.current.attributes[j]; j++)
-          canvasElement.setAttribute(a.name, a.value);
-        img.current.parentNode?.replaceChild(canvasElement, img.current);
-      }
-      setIsGifRunning(false);
+      img.current.onload = () => {
+        if (!img.current) return;
+        canvasElement.getContext('2d')?.drawImage(img.current, 0, 0, w, h);
+
+        try {
+          img.current.src = canvasElement.toDataURL("image/gif"); // if possible, retain all css aspects
+        } catch(e) { // cross-domain -- mimic original with all its tag attributes
+          for (let j = 0, a; a = img.current.attributes[j]; j++)
+            canvasElement.setAttribute(a.name, a.value);
+          img.current.parentNode?.replaceChild(canvasElement, img.current);
+        }
+        setIsGifRunning(false);
+      };
     } else {
       img.current.src = thumbnailSrc;
 
@@ -53,7 +57,7 @@ const ResourceCard = ({src, thumbnailSrc, type, title, className}: Props): JSX.E
     setAspectRatio(`${img.current.naturalWidth}/${img.current.naturalHeight}`);
 
     playPauseGif(false);
-  }, [img.current]);
+  }, [playPauseGif]);
 
   return (
     <div

@@ -23,7 +23,7 @@ const LayoutSwitch = (): ReactElement => {
     } else {
       setIsToggled(layoutPreference.value);
     }
-  }, [loading, preferences]);
+  }, [loading, preferences, updatePreference]);
 
   const handleToggle = async () => {
     updatePreference({
