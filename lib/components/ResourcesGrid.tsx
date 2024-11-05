@@ -2,24 +2,38 @@ import { ReactElement } from 'react';
 import { Resource, ResourceThumbnail } from '@prisma/client';
 import { ResourceCard } from '@/lib/components/ResourceCard';
 
-interface Props {
+interface ResourcesGridProps {
   resources: Array<Resource & { thumbnail: ResourceThumbnail }>;
+  columnCount: number;
+  columnWidth: number;
+  gap: string; // gap between columns
 }
 
-const ResourcesGrid = ({ resources }: Props): ReactElement => {
+const ResourcesGrid = ({
+  resources,
+  columnWidth,
+  columnCount,
+  gap,
+}: ResourcesGridProps): ReactElement => {
   return (
-    <>
+    <div
+      className='box-border grid'
+      style={{
+        gap: gap,
+        marginLeft: `${gap}`,
+        marginRight: `${gap}`,
+        gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+      }}
+    >
       {resources.map((resource) => (
         <ResourceCard
-          src={resource.location}
-          thumbnailSrc={resource.thumbnail.location}
-          type={resource.type}
-          name={resource.name}
+          resource={resource}
           key={resource.name}
-          className='m-2'
+          columnWidth={columnWidth}
+          forcedAspectRatio={1 / 1}
         />
       ))}
-    </>
+    </div>
   );
 };
 

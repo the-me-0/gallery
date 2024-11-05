@@ -3,19 +3,19 @@
 import Image from 'next/image';
 import React, { forwardRef, ReactElement } from 'react';
 
-interface Props {
+interface GImageProps {
   src: string | HTMLImageElement;
   alt: string;
 }
 
-const GImage = forwardRef((props: Props, ref): ReactElement => {
+const GImage = forwardRef((props: GImageProps, ref): ReactElement => {
   return (
     <Image
       src={props.src}
       alt={props.alt}
       className='object-cover'
-      fill
       unoptimized
+      fill
       ref={ref as any}
     />
   );

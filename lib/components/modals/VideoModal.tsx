@@ -15,16 +15,16 @@ const VideoModal = () => {
   const isModalOpen = isOpen && type === 'video';
 
   useEffect(() => {
-    if (!data.content) {
+    if (!data.resource) {
       setVideoSrc(null);
       return;
     }
 
     // Set video source
-    setVideoSrc(data.content.src);
+    setVideoSrc(data.resource.location);
 
     return () => setTitleDisplay({ active: true, forced: false });
-  }, [data.content]);
+  }, [data.resource]);
 
   useEffect(() => {
     if (!videoSrc) return;
@@ -56,7 +56,7 @@ const VideoModal = () => {
     };
   }, [videoSrc]);
 
-  if (!data.content) return null;
+  if (!data.resource) return null;
 
   return (
     <dialog className={`modal ${isModalOpen && 'modal-open'}`}>
@@ -74,7 +74,7 @@ const VideoModal = () => {
         <h3
           className={`absolute bottom-0 z-20 w-full bg-base-100 bg-opacity-70 text-center text-lg font-bold text-primary opacity-0 transition duration-200 group-hover:opacity-100 ${titleDisplay.active && 'opacity-100'} `}
         >
-          {data.content.title}
+          {data.resource.name}
         </h3>
 
         {!videoSrc ? (

@@ -85,6 +85,10 @@ const generateThumbnail = async (
       await image.resize(200).toFile(outputFilePath);
     }
 
+    if (width === 0 || height === 0) {
+      throw new Error('Could not retrieve image dimensions');
+    }
+
     // if (thumbnailAlreadyExists) throw new Error('Thumbnail already exists');
     return { thumbnailPath: outputFilePath, width, height };
   } else {
@@ -104,6 +108,10 @@ const generateThumbnail = async (
       await createGif(tempDir, gifOutputFilePath);
       console.log('GIF created: ', gifOutputFilePath);
       await fs.rm(tempDir, { recursive: true, force: true });
+    }
+
+    if (width === 0 || height === 0) {
+      throw new Error('Could not retrieve video dimensions');
     }
 
     // if (thumbnailAlreadyExists) throw new Error('Thumbnail already exists');

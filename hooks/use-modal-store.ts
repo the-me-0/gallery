@@ -1,9 +1,10 @@
+import { Resource } from '@prisma/client';
 import { create } from 'zustand';
 
 export type ModalType = 'image' | 'video';
 
 interface ModalData {
-  content?: { src: string; name: string };
+  resource?: Resource;
 }
 
 interface ModalStore {
@@ -20,5 +21,5 @@ export const useModal = create<ModalStore>((set) => ({
   isOpen: false,
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
   onClose: () =>
-    set({ type: null, isOpen: false, data: { content: undefined } }),
+    set({ type: null, isOpen: false, data: { resource: undefined } }),
 }));
