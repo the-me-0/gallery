@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useModal } from '@/hooks/use-modal-store';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,10 @@ const VideoModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
-  const [titleDisplay, setTitleDisplay] = useState<{ active: boolean, forced: boolean }>({ active: true, forced: false });
+  const [titleDisplay, setTitleDisplay] = useState<{
+    active: boolean;
+    forced: boolean;
+  }>({ active: true, forced: false });
 
   const isModalOpen = isOpen && type === 'video';
 
@@ -40,9 +43,15 @@ const VideoModal = () => {
 
       if (windowWidth / windowHeight > videoRatio) {
         // The window is wider compared to its height
-        setDisplaySize({ width: windowHeight * videoRatio, height: windowHeight });
+        setDisplaySize({
+          width: windowHeight * videoRatio,
+          height: windowHeight,
+        });
       } else {
-        setDisplaySize({ width: windowWidth, height: windowWidth / videoRatio });
+        setDisplaySize({
+          width: windowWidth,
+          height: windowWidth / videoRatio,
+        });
       }
     };
   }, [videoSrc]);
@@ -52,25 +61,24 @@ const VideoModal = () => {
   return (
     <dialog className={`modal ${isModalOpen && 'modal-open'}`}>
       <div
-        className={`modal-box p-0 max-w-full max-h-full group`}
+        className={`group modal-box max-h-full max-w-full p-0`}
         style={{ height: displaySize.height, width: displaySize.width }}
-        onTouchStart={() => setTitleDisplay({ active: !titleDisplay.active, forced: true })}
-        onPointerLeave={() => !titleDisplay.forced && setTitleDisplay({ active: false, forced: false })}
+        onTouchStart={() =>
+          setTitleDisplay({ active: !titleDisplay.active, forced: true })
+        }
+        onPointerLeave={() =>
+          !titleDisplay.forced &&
+          setTitleDisplay({ active: false, forced: false })
+        }
       >
         <h3
-          className={`
-            font-bold text-lg text-primary transition
-            duration-200 absolute bottom-0 w-full z-20
-            bg-base-100 bg-opacity-70 text-center opacity-0
-            group-hover:opacity-100
-            ${(titleDisplay.active) && 'opacity-100'}
-          `}
+          className={`absolute bottom-0 z-20 w-full bg-base-100 bg-opacity-70 text-center text-lg font-bold text-primary opacity-0 transition duration-200 group-hover:opacity-100 ${titleDisplay.active && 'opacity-100'} `}
         >
           {data.content.title}
         </h3>
 
         {!videoSrc ? (
-          <div className="skeleton h-full w-full"></div>
+          <div className='skeleton h-full w-full'></div>
         ) : (
           <video
             src={videoSrc}
@@ -80,18 +88,12 @@ const VideoModal = () => {
           />
         )}
 
-        <div className="modal-action">
+        <div className='modal-action'>
           {/* close the modal with button top right */}
-          <form method="dialog">
+          <form method='dialog'>
             <button
               onClick={onClose}
-              className={`
-                btn btn-sm btn-circle text-opacity-70
-                border-opacity-70 bg-opacity-20 text-base-100
-                absolute right-2 top-2 opacity-0
-                group-hover:opacity-100
-                ${(titleDisplay.active) && 'opacity-100'}
-              `}
+              className={`btn btn-circle btn-sm absolute right-2 top-2 border-opacity-70 bg-opacity-20 text-base-100 text-opacity-70 opacity-0 group-hover:opacity-100 ${titleDisplay.active && 'opacity-100'} `}
             >
               ✕
             </button>
@@ -100,11 +102,11 @@ const VideoModal = () => {
       </div>
 
       {/* close the modal if click outside */}
-      <form method="dialog" className="modal-backdrop">
+      <form method='dialog' className='modal-backdrop'>
         <button onClick={onClose}>close</button>
       </form>
     </dialog>
   );
-}
+};
 
 export { VideoModal };

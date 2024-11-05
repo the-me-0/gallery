@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ResourceType {
+  IMAGE
+  VIDEO
+}
+
+model Resource {
+  id          Int               @id @default(autoincrement())
+  location    String
+  height      Int
+  width       Int
+  name        String
+  type        ResourceType
+  thumbnail   ResourceThumbnail @relation(fields: [thumbnailId], references: [id])
+  thumbnailId Int               @unique
+}
+
+model ResourceThumbnail {
+  id       Int       @id @default(autoincrement())
+  location String
+  name     String
+  image    Resource?
+}

@@ -1,13 +1,13 @@
 'use client';
 
 import { ReactElement, useEffect, useRef, useState } from 'react';
-import { Resource } from '@/lib/types';
+import { Resource, ResourceThumbnail } from '@prisma/client';
 import { usePreferences } from '@/lib/components/providers/PreferencesProvider';
 import { ResourcesGrid } from '@/lib/components/ResourcesGrid';
 import { ResourcesColumn } from '@/lib/components/ResourcesColumn';
 
 interface Props {
-  resources: Array<Resource>
+  resources: Array<Resource & { thumbnail: ResourceThumbnail }>;
 }
 
 const ResourcesGridWrapper = ({ resources }: Props): ReactElement => {
@@ -35,22 +35,26 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement => {
       calculateColumns();
     }
 
+    const containerRefCurrent = containerRef.current;
+
     return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
+      if (containerRefCurrent) {
+        resizeObserver.unobserve(containerRefCurrent);
       }
     };
   }, []);
 
   return (
     <div className='grid grid-cols-auto-fit' ref={containerRef}>
-      {!preferences.find((pref) => pref.preferenceName === 'gallery-pref_columnResourceLayout')?.value ? (
-          <ResourcesGrid resources={resources} />
+      {!preferences.find(
+        (pref) => pref.preferenceName === 'gallery-pref_columnResourceLayout'
+      )?.value ? (
+        <ResourcesGrid resources={resources} />
       ) : (
         <ResourcesColumn resources={resources} columnCount={columnCount} />
       )}
     </div>
-  )
-}
+  );
+};
 
 export { ResourcesGridWrapper };

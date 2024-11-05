@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export type ModalType = 'image' | 'video';
 
 interface ModalData {
-  content?: { src: string, title: string };
+  content?: { src: string; name: string };
 }
 
 interface ModalStore {
@@ -19,5 +19,6 @@ export const useModal = create<ModalStore>((set) => ({
   data: {},
   isOpen: false,
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
-  onClose: () => set({ type: null, isOpen: false, data: { content: undefined } })
+  onClose: () =>
+    set({ type: null, isOpen: false, data: { content: undefined } }),
 }));

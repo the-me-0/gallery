@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import {useEffect, useState} from "react";
-import {ImageModal} from "@/lib/components/modals/ImageModal";
+import { useEffect, useState } from 'react';
+import { ImageModal } from '@/lib/components/modals/ImageModal';
 import { VideoModal } from '@/lib/components/modals/VideoModal';
 // import {UploadModal} from "@/lib/components/modals/upload-modal";
 
@@ -22,6 +22,6 @@ const ModalProvider = () => {
       <VideoModal />
     </>
   );
-}
+};
 
 export default ModalProvider;

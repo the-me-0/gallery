@@ -1,5 +1,3 @@
-'use server';
-
 import ffmpeg from 'fluent-ffmpeg';
 import sharp from 'sharp';
 import path from 'node:path';
@@ -9,18 +7,13 @@ import { ResourceType } from '@/lib/types';
 const extractFrames = (videoPath: string, tempDir: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     ffmpeg(videoPath)
-      .on('end', () => {
-        resolve();
-      })
-      .on('error', (err) => {
-        console.error(`Error extracting frames: ${err.message}`);
-        reject(err);
-      })
+      .on('end', () => resolve())
+      .on('error', (err) => reject(`Error extracting frames: ${err.message}`))
       .screenshots({
         count: 10,
         folder: tempDir,
         filename: 'frame.png',
-        size: '200x?'
+        size: '200x?',
       });
   });
 };
@@ -32,79 +25,90 @@ const createGif = (tempDir: string, outputPath: string): Promise<void> => {
       .inputOptions('-framerate 2')
       .outputOptions('-vf', 'scale=320:-1:flags=lanczos')
       .outputOptions('-loop', '0')
-      .on('end', () => {
-        console.log(`GIF created at ${outputPath}`);
-        resolve();
-      })
-      .on('error', (err) => {
-        console.error(`Error creating GIF: ${err.message}`);
-        reject(err);
-      })
+      .on('end', () => resolve())
+      .on('error', (err) => reject(`Error creating GIF: ${err.message}`))
       .save(outputPath);
   });
 };
 
-const generateThumbnail = async (file: string, type: ResourceType, isPrivate: boolean): Promise<string> => {
-  const relativePath = path.relative(isPrivate ? 'resources-private/' : 'resources/', file);
+const getVideoDimensions = (
+  videoPath: string
+): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(videoPath, (err, metadata) => {
+      if (err) {
+        return reject(`Error getting video dimensions: ${err.message}`);
+      }
+      const { width, height } =
+        metadata.streams.find((stream) => stream.width && stream.height) || {};
+      if (width && height) {
+        resolve({ width, height });
+      } else {
+        reject('Could not retrieve video dimensions');
+      }
+    });
+  });
+};
+
+const generateThumbnail = async (
+  file: string,
+  type: ResourceType,
+  isPrivate: boolean
+): Promise<{ thumbnailPath: string; width: number; height: number }> => {
+  const relativePath = path.relative(
+    isPrivate ? 'resources-private/' : 'resources/',
+    file
+  );
   const outputFilePath = path.join('resources-thumbnails/', relativePath);
 
   const gifOutputFilePath = path.format({
     ...path.parse(outputFilePath),
-    base: undefined, // Remove the base to avoid doubling the filename.
-    ext: '.gif' // Set the new extension.
+    base: undefined,
+    ext: '.gif',
   });
 
+  let thumbnailAlreadyExists = false;
+
+  let width = 0;
+  let height = 0;
+
+  // Handle image thumbnail and dimensions
   if (type === 'image') {
-    // Check if thumbnail does not already exist
     try {
       await fs.access(outputFilePath);
-      return outputFilePath;
+      thumbnailAlreadyExists = true;
     } catch {
-      // file does not exist: continue !
+      const image = sharp(file);
+      const metadata = await image.metadata();
+      width = metadata.width!;
+      height = metadata.height!;
+      await image.resize(200).toFile(outputFilePath);
     }
+
+    // if (thumbnailAlreadyExists) throw new Error('Thumbnail already exists');
+    return { thumbnailPath: outputFilePath, width, height };
   } else {
-    // Check if thumbnail does not already exist
+    // Handle video thumbnail and dimensions
     try {
       await fs.access(gifOutputFilePath);
-      return gifOutputFilePath;
+      thumbnailAlreadyExists = true;
     } catch {
-      // file does not exist: continue !
+      const { width: videoWidth, height: videoHeight } =
+        await getVideoDimensions(file);
+      width = videoWidth;
+      height = videoHeight;
+
+      const tempDir = outputFilePath + '-temp';
+      await fs.mkdir(tempDir, { recursive: true });
+      await extractFrames(file, tempDir);
+      await createGif(tempDir, gifOutputFilePath);
+      console.log('GIF created: ', gifOutputFilePath);
+      await fs.rm(tempDir, { recursive: true, force: true });
     }
+
+    // if (thumbnailAlreadyExists) throw new Error('Thumbnail already exists');
+    return { thumbnailPath: gifOutputFilePath, width, height };
   }
-
-  // Create lacking directories (if there is)
-  const outputDir = path.dirname(outputFilePath);
-  await fs.mkdir(outputDir, { recursive: true });
-
-  // Creating a thumbnail for a video or an image is different
-  if (type === 'image') {
-    sharp(file)
-      .resize(200)
-      .toFile(outputFilePath, (err, info) => {
-        if (err) {
-          console.error(`Error creating thumbnail for file ${file}`);
-          throw err;
-        }
-        console.log(`Thumbnail created for ${file}`);
-      });
-  } else {
-    // Create a temporary directory for frames
-    const tempDir = path.join(outputDir, 'temp');
-    await fs.mkdir(tempDir, { recursive: true });
-
-    // Extract frames for the gif
-    await extractFrames(file, tempDir);
-
-    // Create gif from extracted frames
-    await createGif(tempDir, gifOutputFilePath);
-
-    // Delete temporary dir
-    await fs.rm(tempDir, { recursive: true, force: true });
-
-    console.log(`GIF thumbnail created for video ${file}`);
-  }
-
-  return outputFilePath;
 };
 
 export default generateThumbnail;

@@ -6,11 +6,11 @@ interface Props {
 
 const GVideo = ({ src }: Props): JSX.Element => {
   return (
-    <video controls preload="none">
+    <video controls preload='none'>
       <source src={src} />
       Your browser does not support the video tag.
     </video>
   );
-}
+};
 
 export { GVideo };

@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
-import { Resource } from '@/lib/types';
+import { Resource, ResourceThumbnail } from '@prisma/client';
 import { ResourceCard } from '@/lib/components/ResourceCard';
 
 interface Props {
-  resources: Array<Resource>
+  resources: Array<Resource & { thumbnail: ResourceThumbnail }>;
 }
 
 const ResourcesGrid = ({ resources }: Props): ReactElement => {
@@ -11,15 +11,16 @@ const ResourcesGrid = ({ resources }: Props): ReactElement => {
     <>
       {resources.map((resource) => (
         <ResourceCard
-          src={resource.src}
-          thumbnailSrc={resource.thumbnailSrc}
+          src={resource.location}
+          thumbnailSrc={resource.thumbnail.location}
           type={resource.type}
-          title={resource.title}
-          key={resource.title}
-          className='m-2' />
+          name={resource.name}
+          key={resource.name}
+          className='m-2'
+        />
       ))}
     </>
-  )
-}
+  );
+};
 
 export { ResourcesGrid };

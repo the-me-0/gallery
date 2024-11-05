@@ -21,7 +21,7 @@ export async function GET(
 
     const file = `resources/${params.fileRoute.join('/')}`;
     const extension = path.extname(file).toLowerCase();
-    const gzip = (extension !== '.gif') && (!videoExtensions.includes(extension));
+    const gzip = extension !== '.gif' && !videoExtensions.includes(extension);
 
     const data: ReadableStream<Uint8Array> = streamFile(file, gzip);
 

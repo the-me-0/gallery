@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react';
 import { LayoutSwitch } from '@/lib/components/LayoutSwitch';
 
 const FilterPanel = (): ReactElement | null => {
@@ -7,6 +7,6 @@ const FilterPanel = (): ReactElement | null => {
       <LayoutSwitch />
     </section>
   );
-}
+};
 
 export { FilterPanel };

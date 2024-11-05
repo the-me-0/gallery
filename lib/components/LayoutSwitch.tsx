@@ -12,7 +12,8 @@ const LayoutSwitch = (): ReactElement => {
     if (loading) return;
 
     const layoutPreference = preferences.find(
-      (preference) => preference.preferenceName === 'gallery-pref_columnResourceLayout'
+      (preference) =>
+        preference.preferenceName === 'gallery-pref_columnResourceLayout'
     );
 
     if (!layoutPreference) {
@@ -29,16 +30,21 @@ const LayoutSwitch = (): ReactElement => {
     updatePreference({
       preferenceName: 'gallery-pref_columnResourceLayout',
       value: !isToggled,
-    })
-  }
+    });
+  };
 
   return (
-    <label className="flex cursor-pointer gap-2">
+    <label className='flex cursor-pointer gap-2'>
       <LayoutGrid />
-      <input type="checkbox" onChange={handleToggle} checked={isToggled} className="toggle checked:text-primary" />
+      <input
+        type='checkbox'
+        onChange={handleToggle}
+        checked={isToggled}
+        className='toggle checked:text-primary'
+      />
       <LayoutDashboard />
     </label>
   );
-}
+};
 
 export { LayoutSwitch };

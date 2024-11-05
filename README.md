@@ -11,6 +11,7 @@ This project is using ESLint and prettier, and is using the following packages t
   ESlint was provided by Next.js during project init.
 
 ## Fonts used
+
 - [Sacramento](https://www.1001freefonts.com/fr/sacramento.font)
 
 ## Licence
