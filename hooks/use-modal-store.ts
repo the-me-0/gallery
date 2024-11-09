@@ -1,10 +1,10 @@
-import { Resource } from '@prisma/client';
+import { Resource, ResourceThumbnail } from '@prisma/client';
 import { create } from 'zustand';
 
 export type ModalType = 'image' | 'video';
 
 interface ModalData {
-  resource?: Resource;
+  resource?: Resource & { thumbnail: ResourceThumbnail };
 }
 
 interface ModalStore {

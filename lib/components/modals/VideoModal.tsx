@@ -71,12 +71,6 @@ const VideoModal = () => {
           setTitleDisplay({ active: false, forced: false })
         }
       >
-        <h3
-          className={`absolute bottom-0 z-20 w-full bg-base-100 bg-opacity-70 text-center text-lg font-bold text-primary opacity-0 transition duration-200 group-hover:opacity-100 ${titleDisplay.active && 'opacity-100'} `}
-        >
-          {data.resource.name}
-        </h3>
-
         {!videoSrc ? (
           <div className='skeleton h-full w-full'></div>
         ) : (
@@ -88,7 +82,7 @@ const VideoModal = () => {
           />
         )}
 
-        <div className='modal-action'>
+        <div className='modal-action m-0'>
           {/* close the modal with button top right */}
           <form method='dialog'>
             <button

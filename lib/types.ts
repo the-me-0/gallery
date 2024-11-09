@@ -1,13 +1,3 @@
-type ResourceType = 'image' | 'video';
-
-interface Resource {
-  type: ResourceType;
-  src: string;
-  thumbnailSrc: string;
-  private: boolean;
-  title: string;
-}
-
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
 const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
 
@@ -25,8 +15,6 @@ interface PreferencesContextType {
 }
 
 export {
-  type ResourceType,
-  type Resource,
   imageExtensions,
   videoExtensions,
   type PreferenceName,

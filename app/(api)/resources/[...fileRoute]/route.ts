@@ -3,6 +3,7 @@ import streamFile from '@/lib/stream-file';
 import { sanitizeMultipleStrings } from '@/lib/sanitize-string';
 import mime from 'mime';
 import path from 'node:path';
+import fs from 'fs';
 import { videoExtensions } from '@/lib/types';
 
 export async function GET(
@@ -20,10 +21,13 @@ export async function GET(
     params.fileRoute = sanitizeMultipleStrings(fileRoute);
 
     const file = `resources/${params.fileRoute.join('/')}`;
-    const extension = path.extname(file).toLowerCase();
-    const gzip = extension !== '.gif' && !videoExtensions.includes(extension);
 
-    const data: ReadableStream<Uint8Array> = streamFile(file, gzip);
+    const fileStats = fs.statSync(file);
+    const contentLength = fileStats.size;
+
+    // gzip is false on default as compressing images offers next to no gain,
+    // and increases processing time (both on server and client)
+    const data: ReadableStream<Uint8Array> = streamFile(file, false);
 
     // define mime type
     let mimeType = mime.getType(file);
@@ -34,8 +38,9 @@ export async function GET(
     return new NextResponse(data, {
       status: 200,
       headers: new Headers({
-        'Content-Encoding': gzip ? 'gzip' : '',
+        'Content-Encoding': '', // if gzip was used, set to 'gzip'
         'content-type': mimeType,
+        'Content-Length': contentLength.toString(),
         'cache-control': 'public, max-age=604800, immutable',
       }),
     });

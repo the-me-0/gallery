@@ -20,10 +20,10 @@ export async function GET(
     params.fileRoute = sanitizeMultipleStrings(fileRoute);
 
     const file = `resources-thumbnails/${params.fileRoute.join('/')}`;
-    const extension = path.extname(file).toLowerCase();
-    const gzip = extension !== '.gif' && !videoExtensions.includes(extension);
 
-    const data: ReadableStream<Uint8Array> = streamFile(file, gzip);
+    // gzip is false on default as compressing images offers next to no gain,
+    // and increases processing time (both on server and client)
+    const data: ReadableStream<Uint8Array> = streamFile(file, false);
 
     // define mime type
     let mimeType = mime.getType(file);
@@ -34,7 +34,7 @@ export async function GET(
     return new NextResponse(data, {
       status: 200,
       headers: new Headers({
-        'Content-Encoding': gzip ? 'gzip' : '',
+        'Content-Encoding': '', // if gzip was used, set to 'gzip'
         'content-type': mimeType,
         'cache-control': 'public, max-age=604800, immutable',
       }),

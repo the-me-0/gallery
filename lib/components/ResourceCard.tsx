@@ -1,8 +1,8 @@
 'use client';
 
-import { JSX, useCallback, useRef, useState } from 'react';
+import { JSX, useCallback, useEffect, useRef, useState } from 'react';
 import { Resource, ResourceThumbnail, ResourceType } from '@prisma/client';
-import { GImage } from '@/lib/components/GImage';
+import { GImage } from '@/lib/components/media-contents/GImage';
 import { useModal } from '@/hooks/use-modal-store';
 
 interface Props {
@@ -18,13 +18,13 @@ const ResourceCard = ({
 }: Props): JSX.Element | null => {
   const { onOpen } = useModal();
   const img = useRef<HTMLImageElement | null>(null);
-  const [isGifRunning, setIsGifRunning] = useState<boolean>(false);
+  const [isGifRunning, setIsGifRunning] = useState<boolean | null>(null);
 
   const playPauseGif = useCallback(() => {
     if (resource.type !== ResourceType.VIDEO) return;
     if (!img.current) return;
 
-    if (isGifRunning) {
+    if (isGifRunning || isGifRunning === null) {
       let canvasElement = document.createElement('canvas');
 
       canvasElement.width = img.current.width;
@@ -40,6 +40,10 @@ const ResourceCard = ({
       setIsGifRunning(true);
     }
   }, [resource, isGifRunning]);
+
+  useEffect(() => {
+    playPauseGif();
+  }, []);
 
   return (
     <div
