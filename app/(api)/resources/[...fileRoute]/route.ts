@@ -2,19 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import streamFile from '@/lib/stream-file';
 import { sanitizeMultipleStrings } from '@/lib/sanitize-string';
 import mime from 'mime';
-import path from 'node:path';
 import fs from 'fs';
-import { videoExtensions } from '@/lib/types';
+import { currentProfile } from '@/lib/current-profile';
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { fileRoute: Array<string> } }
 ) {
   try {
-    // const profile = await currentProfile();
-    // if (!profile) {
-    //   return new NextResponse('Unauthorized', {status: 401});
-    // }
+    const profile = await currentProfile(true);
+    if (profile.status === 'failed') {
+      return new NextResponse('Unauthorized: ' + profile.message, {status: 401});
+    }
 
     const { fileRoute } = await params;
     // remove any non-alphanumeric characters from the imageName, while keeping the dots, dashes, and underscores
