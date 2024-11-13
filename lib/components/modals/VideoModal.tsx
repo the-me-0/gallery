@@ -12,7 +12,7 @@ const VideoModal = () => {
     forced: boolean;
   }>({ active: true, forced: false });
 
-  const isModalOpen = isOpen && type === 'video';
+  const isModalOpen = isOpen && type === 'VIDEO';
 
   useEffect(() => {
     if (!data.resource) {

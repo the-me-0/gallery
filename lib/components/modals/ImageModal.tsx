@@ -8,7 +8,7 @@ const ImageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const [titleDisplay, setTitleDisplay] = useState<boolean>(false);
 
-  const isModalOpen = isOpen && type === 'image';
+  const isModalOpen = isOpen && type === 'IMAGE';
 
   if (!data.resource) return null;
 

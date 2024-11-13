@@ -2,7 +2,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import sharp from 'sharp';
 import path from 'node:path';
 import { promises as fs } from 'node:fs';
-import { ResourceType } from '@/lib/types';
+import { ResourceType } from '@prisma/client';
 
 const extractFrames = (videoPath: string, tempDir: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -67,16 +67,16 @@ const generateThumbnail = async (
     ext: '.gif',
   });
 
-  let thumbnailAlreadyExists = false;
-
   let width = 0;
   let height = 0;
 
   // Handle image thumbnail and dimensions
-  if (type === 'image') {
+  if (type === 'IMAGE') {
     try {
       await fs.access(outputFilePath);
-      thumbnailAlreadyExists = true;
+      // delete the thumbnail if it exists
+      await fs.rm(outputFilePath);
+      throw new Error('Thumbnail already exists');
     } catch {
       const image = sharp(file);
       const metadata = await image.metadata();
@@ -95,7 +95,9 @@ const generateThumbnail = async (
     // Handle video thumbnail and dimensions
     try {
       await fs.access(gifOutputFilePath);
-      thumbnailAlreadyExists = true;
+      // delete the thumbnail if it exists
+      await fs.rm(outputFilePath);
+      throw new Error('Thumbnail already exists');
     } catch {
       const { width: videoWidth, height: videoHeight } =
         await getVideoDimensions(file);
@@ -114,7 +116,6 @@ const generateThumbnail = async (
       throw new Error('Could not retrieve video dimensions');
     }
 
-    // if (thumbnailAlreadyExists) throw new Error('Thumbnail already exists');
     return { thumbnailPath: gifOutputFilePath, width, height };
   }
 };

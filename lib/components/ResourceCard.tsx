@@ -49,11 +49,7 @@ const ResourceCard = ({
     <div
       className='group card box-border h-fit cursor-pointer bg-base-100'
       style={{ width: columnWidth, aspectRatio: forcedAspectRatio }}
-      onClick={() =>
-        resource.type === 'IMAGE'
-          ? onOpen('image', { resource })
-          : onOpen('video', { resource })
-      }
+      onClick={() => onOpen(resource.type, { resource })}
       onPointerEnter={() => playPauseGif()}
       onPointerLeave={() => playPauseGif()}
       // onTouchStart={() => playPauseGif()}

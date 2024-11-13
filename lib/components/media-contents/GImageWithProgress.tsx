@@ -55,7 +55,7 @@ const GImageWithProgress: React.FC<GImageWithProgressProps> = ({
   }, [src]);
 
   return (
-    <div className=''>
+    <>
       {!imageSrc && (
         <>
           <progress className="absolute bottom-0 w-full progress z-50" value={progress} max="100"></progress>
@@ -64,7 +64,7 @@ const GImageWithProgress: React.FC<GImageWithProgressProps> = ({
         </>
       )}
       {imageSrc && <GImage src={imageSrc} alt={alt} />}
-    </div>
+    </>
   );
 };
 

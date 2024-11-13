@@ -2,50 +2,47 @@
 
 import {
   imageExtensions,
-  Resource,
-  ResourceType,
   videoExtensions,
 } from '@/lib/types';
 import { promises as fs } from 'fs';
 import path from 'path';
 import generateThumbnail from '@/lib/actions/generateThumbnail';
 import { db } from '@/lib/db';
+import { Resource, ResourceType } from '@prisma/client';
 
 const pushToDB = async (
   filePath: string,
   thumbnailPath: string,
   type: ResourceType,
   width: number,
-  height: number,
-  isPrivate: boolean
-) => {
+  height: number
+): Promise<Resource> => {
   const thumbnail = await db.resourceThumbnail.create({
     data: {
-      location: thumbnailPath,
+      location: '/' + thumbnailPath,
       name: filePath.substring(0, filePath.lastIndexOf('.')),
     },
   });
 
-  await db.resource.create({
+  return await db.resource.create({
     data: {
-      location: filePath,
+      location: '/' + filePath,
       height,
       width,
       name: filePath.substring(0, filePath.lastIndexOf('.')),
-      type: type === 'image' ? 'IMAGE' : 'VIDEO',
+      type: type,
       thumbnailId: thumbnail.id,
+      // no profileId here, as it is not known at this point. Images newly indexed will have to be manually attributed by admins.
     },
   });
-
-  console.log(`Resource ${filePath} indexed`);
 };
 
 const getResourceType = (extension: string): ResourceType | null => {
   if (imageExtensions.includes(extension)) {
-    return 'image';
+    return 'IMAGE';
   }
   if (videoExtensions.includes(extension)) {
-    return 'video';
+    return 'VIDEO';
   }
   return null;
 };
@@ -55,7 +52,7 @@ const indexDirectory = async (
   isPrivate: boolean,
   alreadyIndexed: Array<string> = []
 ): Promise<Array<Resource>> => {
-  let resources: Resource[] = [];
+  let resources: Array<Resource> = [];
 
   const files: Array<string> = await fs.readdir(dirPath);
 
@@ -64,7 +61,7 @@ const indexDirectory = async (
 
     // If the file is already indexed, skip it
     const filePath = path.join(dirPath, file);
-    if (alreadyIndexed.includes(filePath)) continue;
+    if (alreadyIndexed.includes('/' + filePath)) continue;
 
     const stat = await fs.stat(filePath);
 
@@ -81,15 +78,9 @@ const indexDirectory = async (
           isPrivate
         );
 
-        await pushToDB(filePath, thumbnailPath, type, width, height, isPrivate);
+        const resource = await pushToDB(filePath, thumbnailPath, type, width, height);
 
-        resources.push({
-          type,
-          src: filePath,
-          thumbnailSrc: thumbnailPath,
-          private: isPrivate,
-          title: file.substring(0, file.lastIndexOf('.')),
-        });
+        resources.push(resource);
       }
     }
   }
@@ -114,12 +105,12 @@ const indexResources = async (): Promise<Array<Resource>> => {
     false,
     alreadyIndexed
   );
-  const privateResources = await indexDirectory(
-    'resources-private/',
-    true,
-    alreadyIndexed
-  );
-  return [...publicResources, ...privateResources];
+  // const privateResources = await indexDirectory(
+  //   'resources-private/',
+  //   true,
+  //   alreadyIndexed
+  // );
+  return [...publicResources]; // ...privateResources
 };
 
 export default indexResources;

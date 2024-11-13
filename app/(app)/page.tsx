@@ -7,7 +7,7 @@ export default async function Home() {
   const newResources = await indexResources();
   console.log(
     'newly indexed resources:',
-    newResources.map((r) => r.title)
+    newResources.map((r) => r.name)
   );
   const resources = await getResources();
 
