@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { JSX } from 'react';
 
 const Navbar = (): JSX.Element => {
@@ -9,13 +10,6 @@ const Navbar = (): JSX.Element => {
         </a>
       </div>
       <div className='flex-none gap-2'>
-        <div className='form-control'>
-          <input
-            type='text'
-            placeholder='Search'
-            className='input input-bordered w-24 md:w-auto'
-          />
-        </div>
         <div className='dropdown dropdown-end'>
           <div
             tabIndex={0}
@@ -33,7 +27,7 @@ const Navbar = (): JSX.Element => {
             tabIndex={0}
             className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'
           >
-            <li>
+            {/* <li>
               <a className='justify-between'>
                 Profile
                 <span className='badge'>New</span>
@@ -41,9 +35,9 @@ const Navbar = (): JSX.Element => {
             </li>
             <li>
               <a>Settings</a>
-            </li>
+            </li> */}
             <li>
-              <a>Logout</a>
+              <Link href='/logout'>Log out</Link>
             </li>
           </ul>
         </div>
