@@ -11,6 +11,12 @@ type ValidatedProfile = { status: 'success', profile: Profile };
 export const currentProfile = async (noRedirect: boolean = false): Promise<ValidationFailedProfile | ValidatedProfile> => {
     let session = await auth();
 
+    if (!session && !noRedirect) {
+        redirect('/auth/login');
+    } else if (!session) {
+        return { status: 'failed', message: 'You are not logged in. Please log-in to access this route.' };
+    }
+
     // @ts-ignore
     session = (session && session.isAuthenticated) ? session : null;
 
