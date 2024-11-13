@@ -1,4 +1,4 @@
-const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
 const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
 
 type PreferenceName = 'gallery-pref_columnResourceLayout';

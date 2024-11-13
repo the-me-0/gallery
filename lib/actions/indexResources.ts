@@ -19,14 +19,14 @@ const pushToDB = async (
 ): Promise<Resource> => {
   const thumbnail = await db.resourceThumbnail.create({
     data: {
-      location: '/' + thumbnailPath,
+      location: '/api/' + thumbnailPath,
       name: filePath.substring(0, filePath.lastIndexOf('.')),
     },
   });
 
   return await db.resource.create({
     data: {
-      location: '/' + filePath,
+      location: '/api/' + filePath,
       height,
       width,
       name: filePath.substring(0, filePath.lastIndexOf('.')),
@@ -61,7 +61,8 @@ const indexDirectory = async (
 
     // If the file is already indexed, skip it
     const filePath = path.join(dirPath, file);
-    if (alreadyIndexed.includes('/' + filePath)) continue;
+    if (alreadyIndexed.includes('/api/' + filePath)) continue;
+    console.log('Indexing', '/api/' + filePath);
 
     const stat = await fs.stat(filePath);
 
@@ -92,6 +93,7 @@ const indexDirectory = async (
 // example : "(". FIX : files that are considered to have an unsafe name can be renamed with admin panel ?
 
 const indexResources = async (): Promise<Array<Resource>> => {
+  console.log('Indexing resources...');
   const alreadyIndexed: Array<string> = (
     await db.resource.findMany({
       select: {
@@ -99,6 +101,7 @@ const indexResources = async (): Promise<Array<Resource>> => {
       },
     })
   ).map((resource: { location: string }) => resource.location);
+  console.log('Already indexed:', alreadyIndexed);
 
   const publicResources = await indexDirectory(
     'resources/',
