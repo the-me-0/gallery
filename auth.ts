@@ -1,10 +1,10 @@
-import type { NextAuthConfig } from "next-auth"
+import type { NextAuthConfig } from 'next-auth';
 
-import Credentials from "next-auth/providers/credentials";
-import { LoginSchema } from "./lib/schemas/authSchemas";
-import { getProfileById, getProfileByUsername } from "./lib/actions/profile";
+import Credentials from 'next-auth/providers/credentials';
+import { LoginSchema } from './lib/schemas/authSchemas';
+import { getProfileById, getProfileByUsername } from './lib/actions/profile';
 import bcrypt from 'bcryptjs';
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
 
 export const authOptions: NextAuthConfig = {
   providers: [
@@ -33,7 +33,7 @@ export const authOptions: NextAuthConfig = {
 
         return null;
       },
-    })
+    }),
   ],
   callbacks: {
     async session({ session, token }) {
@@ -55,13 +55,9 @@ export const authOptions: NextAuthConfig = {
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   trustHost: true,
-}
+};
 
-export const {
-  signIn,
-  signOut,
-  auth,
-} = NextAuth(authOptions);
+export const { signIn, signOut, auth } = NextAuth(authOptions);

@@ -1,5 +1,5 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
-import type { NextAuthConfig } from "next-auth"
+import type { NextAuthConfig } from 'next-auth';
 import bcrypt from 'bcryptjs';
 
 import { LoginSchema } from '@/lib/schemas/authSchemas';
@@ -32,6 +32,6 @@ export default {
 
         return null;
       },
-    })
-  ]
+    }),
+  ],
 } satisfies NextAuthConfig;

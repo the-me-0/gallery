@@ -15,7 +15,7 @@ export default async function RootLayout({
   if (auth.status !== 'success') {
     return null;
   }
-  
+
   return (
     <>
       <ModalProvider />

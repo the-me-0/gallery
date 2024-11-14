@@ -42,7 +42,11 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     willBeAdmin = true;
   }
 
-  console.log('[REGISTER] Using sponsorship key to create user "', username, '"');
+  console.log(
+    '[REGISTER] Using sponsorship key to create user "',
+    username,
+    '"'
+  );
   if (willBeAdmin) {
     console.log('[REGISTER] First user created, will be admin');
   }
@@ -58,8 +62,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   // one use only sponsorship
   await db.sponsorship.delete({
     where: {
-      id: existingSponsorship.id
-    }
+      id: existingSponsorship.id,
+    },
   });
 
   // now we sign the user up
@@ -71,4 +75,4 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   // We never get to this point because the user is redirected to the homepage once the user is signed in
   return { success: 'User created! Redirecting...' };
-}
+};

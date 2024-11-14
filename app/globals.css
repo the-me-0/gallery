@@ -54,13 +54,12 @@ body {
 .wavy-background {
   position: absolute;
   top: 0;
-  transform: rotate(80deg); 
+  transform: rotate(80deg);
   left: 0;
 
-  
   .wave {
     position: absolute;
-    opacity: .4;
+    opacity: 0.4;
     width: 1500px;
     height: 1300px;
     margin-left: -150px;
@@ -73,7 +72,7 @@ body {
     opacity: 5%;
     background: white;
   }
-  
+
   .wave.-two {
     animation: rotate-wave 6000ms infinite linear;
     opacity: 20%;
@@ -82,6 +81,10 @@ body {
 }
 
 @keyframes rotate-wave {
-  from {transform: rotate(0deg);}
-  from {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
+  }
 }

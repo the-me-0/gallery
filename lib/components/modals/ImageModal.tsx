@@ -34,7 +34,11 @@ const ImageModal = () => {
         onPointerEnter={() => setTitleDisplay(true)}
         onPointerLeave={() => setTitleDisplay(false)}
       >
-        <GImageWithProgress src={data.resource.location} alt={data.resource.name} thumbnailSrc={data.resource.thumbnail.location} />
+        <GImageWithProgress
+          src={data.resource.location}
+          alt={data.resource.name}
+          thumbnailSrc={data.resource.thumbnail.location}
+        />
 
         <div className='modal-action mt-0'>
           {/* close the modal with button top right */}

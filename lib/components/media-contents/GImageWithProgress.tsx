@@ -12,7 +12,7 @@ interface GImageWithProgressProps {
 const GImageWithProgress: React.FC<GImageWithProgressProps> = ({
   src,
   alt,
-  thumbnailSrc
+  thumbnailSrc,
 }) => {
   const [progress, setProgress] = useState<number>(0);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -41,7 +41,7 @@ const GImageWithProgress: React.FC<GImageWithProgressProps> = ({
     };
 
     xhr.onerror = () => {
-      console.error('Erreur lors du téléchargement de l\'image');
+      console.error("Erreur lors du téléchargement de l'image");
     };
 
     xhr.send();
@@ -52,13 +52,17 @@ const GImageWithProgress: React.FC<GImageWithProgressProps> = ({
         URL.revokeObjectURL(imageSrc);
       }
     };
-  }, [src]);
+  }, [src, imageSrc]);
 
   return (
     <>
       {!imageSrc && (
         <>
-          <progress className="absolute bottom-0 w-full progress z-50" value={progress} max="100"></progress>
+          <progress
+            className='progress absolute bottom-0 z-50 w-full'
+            value={progress}
+            max='100'
+          ></progress>
           {/* We display the thumbnail that has most likely already been cached while the high quality image loads */}
           <GImage src={thumbnailSrc} alt={alt} />
         </>

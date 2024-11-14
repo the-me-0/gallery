@@ -11,7 +11,9 @@ export async function GET(
   try {
     const profile = await currentProfile(true);
     if (profile.status === 'failed') {
-      return new NextResponse('Unauthorized: ' + profile.message, {status: 401});
+      return new NextResponse('Unauthorized: ' + profile.message, {
+        status: 401,
+      });
     }
 
     const { fileRoute } = await params;

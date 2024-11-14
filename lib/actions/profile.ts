@@ -11,7 +11,7 @@ export const getProfileByUsername = async (username: string) => {
   } catch (error) {
     return null;
   }
-}
+};
 
 export const getProfileById = async (id: string) => {
   try {
@@ -24,4 +24,4 @@ export const getProfileById = async (id: string) => {
   } catch (error) {
     return null;
   }
-}
+};

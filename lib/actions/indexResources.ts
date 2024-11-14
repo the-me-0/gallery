@@ -1,9 +1,6 @@
 'use server';
 
-import {
-  imageExtensions,
-  videoExtensions,
-} from '@/lib/types';
+import { imageExtensions, videoExtensions } from '@/lib/types';
 import { promises as fs } from 'fs';
 import path from 'path';
 import generateThumbnail from '@/lib/actions/generateThumbnail';
@@ -79,7 +76,13 @@ const indexDirectory = async (
           isPrivate
         );
 
-        const resource = await pushToDB(filePath, thumbnailPath, type, width, height);
+        const resource = await pushToDB(
+          filePath,
+          thumbnailPath,
+          type,
+          width,
+          height
+        );
 
         resources.push(resource);
       }
@@ -103,17 +106,17 @@ const indexResources = async (): Promise<Array<Resource>> => {
   ).map((resource: { location: string }) => resource.location);
   console.log('Already indexed:', alreadyIndexed);
 
-  const publicResources = await indexDirectory(
-    'resources/',
-    false,
-    alreadyIndexed
-  );
-  // const privateResources = await indexDirectory(
-  //   'resources-private/',
-  //   true,
+  // const publicResources = await indexDirectory(
+  //   'resources/',
+  //   false,
   //   alreadyIndexed
   // );
-  return [...publicResources]; // ...privateResources
+  const privateResources = await indexDirectory(
+    'resources-private/',
+    true,
+    alreadyIndexed
+  );
+  return [...privateResources]; // ...privateResources
 };
 
 export default indexResources;

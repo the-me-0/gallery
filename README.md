@@ -2,7 +2,6 @@
 
 A gallery web app, with similar technologies as my last project [Groove](https://github.com/the-me-0/groove) (NextJS)
 
-
 ## TODO
 
 - generate thumbnails in webp

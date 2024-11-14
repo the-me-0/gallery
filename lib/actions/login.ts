@@ -3,7 +3,7 @@
 import * as z from 'zod';
 import { AuthError } from 'next-auth';
 
-import { signIn } from "@/auth";
+import { signIn } from '@/auth';
 import { LoginSchema } from '@/lib/schemas/authSchemas';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
@@ -27,7 +27,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case "CredentialsSignin":
+        case 'CredentialsSignin':
           return { error: 'Invalid credentials!' };
         default:
           return { error: 'Something went wrong!' };
@@ -36,4 +36,4 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 
     throw error;
   }
-}
+};
