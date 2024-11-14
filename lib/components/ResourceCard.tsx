@@ -18,32 +18,59 @@ const ResourceCard = ({
 }: Props): JSX.Element | null => {
   const { onOpen } = useModal();
   const img = useRef<HTMLImageElement | null>(null);
-  const [isGifRunning, setIsGifRunning] = useState<boolean | null>(null);
+  const [isGifRunning, setIsGifRunning] = useState<boolean>(true);
 
+  // ROLE : pause the gif. Removes the event listener to avoid being called once this very job is done.
+  const pausegif = useCallback(() => {
+    if (!img.current) return;
+    img.current.removeEventListener('load', pausegif);
+    let canvasElement = document.createElement('canvas');
+
+    canvasElement.width = img.current.width;
+    canvasElement.height = img.current.height;
+
+    const context2d = canvasElement.getContext('2d');
+    if (!context2d) throw new Error('Canvas not supported');
+    context2d.drawImage(
+      img.current,
+      0,
+      0,
+      img.current.width,
+      img.current.height
+    );
+    img.current.src = canvasElement.toDataURL();
+
+    setIsGifRunning(false);
+  }, []);
+
+  // ROLE : when called by hover hooks, play or pause the gif.
   const playPauseGif = useCallback(() => {
     if (resource.type !== ResourceType.VIDEO) return;
     if (!img.current) return;
 
-    if (isGifRunning || isGifRunning === null) {
-      let canvasElement = document.createElement('canvas');
-
-      canvasElement.width = img.current.width;
-      canvasElement.height = img.current.height;
-
-      canvasElement.getContext('2d')?.drawImage(img.current, 0, 0);
-      img.current.src = canvasElement.toDataURL('image/gif');
-
-      setIsGifRunning(false);
+    if (isGifRunning) {
+      console.log('playPauseGif', 'pausing');
+      pausegif();
     } else {
+      console.log('playPauseGif', 'playing');
       img.current.src = resource.thumbnail.location;
-
       setIsGifRunning(true);
     }
-  }, [resource, isGifRunning]);
+  }, [resource, isGifRunning, pausegif]);
 
+  // ROLE : on first load, pause the gif.
   useEffect(() => {
-    playPauseGif();
-  }, []);
+    const currentImg = img.current;
+    if (currentImg) {
+      currentImg.addEventListener('load', pausegif);
+    }
+
+    return () => {
+      if (currentImg) {
+        currentImg.removeEventListener('load', pausegif);
+      }
+    };
+  }, [pausegif]);
 
   return (
     <div
