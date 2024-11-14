@@ -5,7 +5,7 @@ import * as z from 'zod';
 
 import { db } from '@/lib/db';
 import { RegisterSchema } from '@/lib/schemas/authSchemas';
-import { Profile } from '@prisma/client';
+import { Profile, Role } from '@prisma/client';
 import { getProfileByUsername } from '@/lib/actions/profile';
 import { signIn } from '@/auth';
 
@@ -35,12 +35,23 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: 'Username already exists' };
   }
 
+  let willBeAdmin = false;
+  const userCount = await db.profile.count();
+  if (userCount === 0) {
+    // first user is an admin
+    willBeAdmin = true;
+  }
+
   console.log('[REGISTER] Using sponsorship key to create user "', username, '"');
+  if (willBeAdmin) {
+    console.log('[REGISTER] First user created, will be admin');
+  }
 
   await db.profile.create({
     data: {
       username,
       password: hashedPassword,
+      role: willBeAdmin ? Role.ADMIN : Role.USER,
     },
   });
 

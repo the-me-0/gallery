@@ -70,7 +70,7 @@ const Login: React.FC = () => {
           </div>
 
           <div className='card-actions w-full justify-around items-center'>
-            <Link href='/auth/register' className=''>You don't have an account ?</Link>
+            <Link href='/auth/register' className=''>You don&apos;t have an account ?</Link>
             <button className='btn btn-secondary rounded-full' disabled={isPending}>Connect</button>
           </div>
         </form>

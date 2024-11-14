@@ -4,11 +4,6 @@ import { ResourcesGridWrapper } from '@/lib/components/ResourcesGridWrapper';
 import getResources from '@/lib/actions/getResources';
 
 export default async function Home() {
-  const newResources = await indexResources();
-  console.log(
-    'newly indexed resources:',
-    newResources.map((r) => r.name)
-  );
   const resources = await getResources();
 
   return (

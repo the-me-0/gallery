@@ -1,14 +1,12 @@
 import { Profile } from "@prisma/client";
 import { auth } from '@/auth';
+import type { ValidationResult } from "@/lib/types";
 import { getProfileById } from '@/lib/actions/profile';
-import {redirect} from 'next/navigation';
-
-type ValidationFailedProfile = { status: 'failed', message: string };
-type ValidatedProfile = { status: 'success', profile: Profile };
+import { redirect } from 'next/navigation';
 
 // if (noredirect === true) then failed status can be returned
 // if (noredirect === false) then failed status won't be sent but rather redirection executed
-export const currentProfile = async (noRedirect: boolean = false): Promise<ValidationFailedProfile | ValidatedProfile> => {
+export const currentProfile = async (noRedirect: boolean = false): Promise<ValidationResult<Profile>> => {
     let session = await auth();
 
     if (!session && !noRedirect) {
@@ -39,5 +37,5 @@ export const currentProfile = async (noRedirect: boolean = false): Promise<Valid
         return { status: 'failed', message: 'User session failed to link to a user. Please logout and log back in.' };
     }
 
-    return { status: 'success', profile };
+    return { status: 'success', data: profile };
 }

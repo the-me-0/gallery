@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   description: 'Wonders of the world',
 };
 
+//---x: the first user to be created shall be an admin
+//TODO: add button in navbar to invite users (admin only)
+//TODO: add button in navbar to index resources (admin only) - remove index from page '/'
+//TODO: fix gif display showing dark until first hover
+//TODO: make prettier & eslint mandatory (pre-commit hook)
+//TODO: complete README.md
+
+//TODO: later: upgrade column display (allow user to select column count, keep the ui from switching the column count auto. at page load)
+//TODO: later: Add categories to resources & support for folders in resources
+
 export default async function RootLayout({
   children,
 }: Readonly<{

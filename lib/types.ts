@@ -14,10 +14,15 @@ interface PreferencesContextType {
   loading: boolean;
 }
 
+type ValidationResult<T> =
+  | { status: 'failed'; message: string }
+  | { status: 'success'; data: T };
+
 export {
   imageExtensions,
   videoExtensions,
   type PreferenceName,
   type Preference,
   type PreferencesContextType,
+  type ValidationResult,
 };
