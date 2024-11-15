@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 //---x: the first user to be created shall be an admin
 //---x: add button in navbar to invite users (admin only)
 //---x: add button in navbar to index resources (admin only) - remove index from page '/'
-//TODO: fix gif display showing dark until first hover
+//---x: fix gif display showing dark until first hover
 //TODO: make prettier & eslint mandatory (pre-commit hook)
 //TODO: complete README.md
 

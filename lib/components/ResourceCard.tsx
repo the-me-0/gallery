@@ -49,10 +49,8 @@ const ResourceCard = ({
     if (!img.current) return;
 
     if (isGifRunning) {
-      console.log('playPauseGif', 'pausing');
       pausegif();
     } else {
-      console.log('playPauseGif', 'playing');
       img.current.src = resource.thumbnail.location;
       setIsGifRunning(true);
     }
