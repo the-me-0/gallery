@@ -2,6 +2,10 @@
 
 A gallery web app, with similar technologies as my last project [Groove](https://github.com/the-me-0/groove) (NextJS)
 
+## TODO
+
+- generate thumbnails in webp
+
 # ESLint & Prettier
 
 This project is using ESLint and prettier, and is using the following packages to do so :
@@ -9,6 +13,10 @@ This project is using ESLint and prettier, and is using the following packages t
 - prettier-plugin-tailwindcss,
 - eslint-config-prettier
   ESlint was provided by Next.js during project init.
+
+## Fonts used
+
+- [Sacramento](https://www.1001freefonts.com/fr/sacramento.font)
 
 ## Licence
 

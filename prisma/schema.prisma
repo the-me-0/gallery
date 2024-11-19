@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Profile {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+  role     Role   @default(USER)
+
+  resources   Resource[]
+  Sponsorship Sponsorship[]
+
+  createdAt DateTime @default(now())
+}
+
+model Sponsorship {
+  id        String   @id @default(cuid())
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
+  key       String   @unique
+}
+
+enum ResourceType {
+  IMAGE
+  VIDEO
+}
+
+model Resource {
+  id          String            @id @default(cuid())
+  location    String
+  height      Int
+  width       Int
+  name        String
+  type        ResourceType
+  thumbnail   ResourceThumbnail @relation(fields: [thumbnailId], references: [id])
+  thumbnailId String            @unique
+
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
+}
+
+model ResourceThumbnail {
+  id       String    @id @default(cuid())
+  location String
+  name     String
+  image    Resource?
+}

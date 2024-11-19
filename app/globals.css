@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Sacramento';
+  src: url('../public/fonts/Sacramento-Regular.ttf');
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -29,5 +34,57 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  .fl-center {
+    @apply flex items-center justify-center;
+  }
+
+  .hw-full {
+    @apply h-full w-full;
+  }
+}
+
+/* =~=~=~=~=~=~=~=~=~= */
+/*  Own CSS            */
+/* =~=~=~=~=~=~=~=~=~= */
+
+.wavy-background {
+  position: absolute;
+  top: 0;
+  transform: rotate(80deg);
+  left: 0;
+
+  .wave {
+    position: absolute;
+    opacity: 0.4;
+    width: 1500px;
+    height: 1300px;
+    margin-left: -150px;
+    margin-top: -250px;
+    border-radius: 43%;
+  }
+
+  .wave.-one {
+    animation: rotate-wave 10000ms infinite linear;
+    opacity: 5%;
+    background: white;
+  }
+
+  .wave.-two {
+    animation: rotate-wave 6000ms infinite linear;
+    opacity: 20%;
+    background: white;
+  }
+}
+
+@keyframes rotate-wave {
+  from {
+    transform: rotate(0deg);
+  }
+  from {
+    transform: rotate(360deg);
   }
 }
