@@ -30,7 +30,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en' data-theme='blue'>
-      <body className={inter.className && 'h-full'}>
+      <body className={inter.className && 'h-full text-white'}>
         <SessionProvider>
           <PreferencesProvider>{children}</PreferencesProvider>
           <Toaster />
