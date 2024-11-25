@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { db } from '@/lib/db';
+import fs from 'fs';
 
 const register = async () => {
   const profiles = await db.profile.count();
@@ -24,8 +25,28 @@ const register = async () => {
     console.log('Old sponsorship found:', sponsorship?.key);
   }
 
+  await initFolders();
+
   console.log('Gallery project initialized. Enjoy !');
   console.log('=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~');
 };
+
+const initFolders = async () => {
+  const neededFolders = ['resources', 'resources-private', 'resources-thumbnails'];
+
+  for (const folder of neededFolders) {
+    try {
+      await fs.promises.mkdir(`./${folder}`);
+    } catch (error: any) {
+      if (error.code === 'EEXIST') {
+        console.log(`Folder ${folder} already exists.`);
+      } else {
+        console.error(`Error creating folder ${folder}:`, error);
+      }
+    }
+  }
+
+  console.log('Folders initialized.');
+}
 
 export { register };
