@@ -21,7 +21,7 @@ const pushToDB = async (
     },
   });
 
-  return await db.resource.create({
+  return db.resource.create({
     data: {
       location: '/api/' + filePath,
       height,
