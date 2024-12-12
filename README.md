@@ -14,9 +14,10 @@ This project is using ESLint and prettier, and is using the following packages t
 - eslint-config-prettier
   ESlint was provided by Next.js during project init.
 
-## Fonts used
+## FFmpeg dependency
 
-- [Sacramento](https://www.1001freefonts.com/fr/sacramento.font)
+I don't know for unix systems, but on windows it's as simple as running `winget install "FFmpeg (Essentials Build)"`
+in a powershell.
 
 ## Licence
 
