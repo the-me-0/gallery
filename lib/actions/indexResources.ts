@@ -47,7 +47,8 @@ const getResourceType = (extension: string): ResourceType | null => {
 const indexDirectory = async (
   dirPath: string,
   isPrivate: boolean,
-  alreadyIndexed: Array<string> = []
+  alreadyIndexed: Array<string> = [],
+  basePath: string = ''
 ): Promise<Array<Resource>> => {
   let resources: Array<Resource> = [];
 
@@ -64,7 +65,8 @@ const indexDirectory = async (
     const stat = await fs.stat(filePath);
 
     if (stat.isDirectory()) {
-      resources = resources.concat(await indexDirectory(filePath, isPrivate));
+      const basePath = path.join(dirPath, file);
+      resources = resources.concat(await indexDirectory(filePath, isPrivate, alreadyIndexed));
     } else {
       const extension = path.extname(file).toLowerCase();
       const type = getResourceType(extension);

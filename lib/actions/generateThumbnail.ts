@@ -78,6 +78,9 @@ const generateThumbnail = async (
       await fs.rm(outputFilePath);
       throw new Error('Thumbnail already exists');
     } catch {
+      // We need to create the folder structure for the thumbnail, in case the image is deep in a folder
+      await fs.mkdir(path.dirname(outputFilePath), { recursive: true });
+
       const image = sharp(file);
       const metadata = await image.metadata();
       width = metadata.width!;
