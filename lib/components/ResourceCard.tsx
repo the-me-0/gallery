@@ -87,6 +87,7 @@ const ResourceCard = ({
           src={resource.thumbnail.location}
           alt={resource.thumbnail.name}
           ref={img}
+          className={forcedAspectRatio ? 'object-cover' : 'object-contain'}
         />
       </figure>
       <div className='card-body absolute bottom-0 w-full rounded-b-2xl bg-base-100 bg-opacity-65 p-0 px-2 opacity-0 group-hover:opacity-100'>

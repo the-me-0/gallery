@@ -30,7 +30,7 @@ const ResourcesGrid = ({
           resource={resource}
           key={resource.name}
           columnWidth={columnWidth}
-          forcedAspectRatio={1 / 1}
+          forcedAspectRatio={1}
         />
       ))}
     </div>
