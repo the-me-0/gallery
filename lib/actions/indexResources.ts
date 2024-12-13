@@ -3,7 +3,7 @@
 import { imageExtensions, videoExtensions } from '@/lib/types';
 import { promises as fs } from 'fs';
 import path from 'path';
-import generateThumbnail from '@/lib/actions/generateThumbnail';
+import generateThumbnail from '@/lib/indexationScript/generateThumbnail';
 import { db } from '@/lib/db';
 import { Resource, ResourceType } from '@prisma/client';
 
@@ -66,7 +66,9 @@ const indexDirectory = async (
 
     if (stat.isDirectory()) {
       const basePath = path.join(dirPath, file);
-      resources = resources.concat(await indexDirectory(filePath, isPrivate, alreadyIndexed));
+      resources = resources.concat(
+        await indexDirectory(filePath, isPrivate, alreadyIndexed)
+      );
     } else {
       const extension = path.extname(file).toLowerCase();
       const type = getResourceType(extension);

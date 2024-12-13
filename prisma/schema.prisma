@@ -56,3 +56,15 @@ model ResourceThumbnail {
   name     String
   image    Resource?
 }
+
+enum WorkerState {
+  IDLE
+  BUSY
+}
+
+model Worker {
+  id       String      @id @default(cuid())
+  name     String      @unique
+  state    WorkerState
+  progress Int
+}

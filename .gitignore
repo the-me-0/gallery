@@ -39,4 +39,3 @@ next-env.d.ts
 # project-specific
 /resources
 /resources-private
-/resources-thumbnails

@@ -52,14 +52,13 @@ const getVideoDimensions = (
 
 const generateThumbnail = async (
   file: string,
-  type: ResourceType,
-  isPrivate: boolean
+  type: ResourceType
 ): Promise<{ thumbnailPath: string; width: number; height: number }> => {
-  const relativePath = path.relative(
-    isPrivate ? 'resources-private/' : 'resources/',
-    file
+  // take everything before the first "/" as a base directory, add a subfolder "gallery_thumbnails" and the rest of the path
+  const outputFilePath = file.replace(
+    /^(.*?)(\/)(.*)$/,
+    '$1/gallery_thumbnails/$3'
   );
-  const outputFilePath = path.join('resources-thumbnails/', relativePath);
 
   const gifOutputFilePath = path.format({
     ...path.parse(outputFilePath),

@@ -6,7 +6,6 @@ import React, { forwardRef, ReactElement } from 'react';
 interface GImageProps {
   src: string | HTMLImageElement;
   alt: string;
-  className?: string;
 }
 
 const GImage = forwardRef((props: GImageProps, ref): ReactElement => {
@@ -14,7 +13,7 @@ const GImage = forwardRef((props: GImageProps, ref): ReactElement => {
     <Image
       src={props.src}
       alt={props.alt}
-      className={props.className} //
+      className='object-cover'
       unoptimized
       fill
       ref={ref as any}

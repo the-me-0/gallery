@@ -67,7 +67,7 @@ const ResourcesColumn = ({
       {columns.map((columnWithHeight, index) => (
         <div
           key={index}
-          className='flex flex-col gap-4'
+          className='flex flex-col gap-2'
           style={{ width: columnWidth }}
         >
           {columnWithHeight.column.map((resource) => (

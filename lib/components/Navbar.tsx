@@ -6,6 +6,8 @@ import { Profile } from '@prisma/client';
 import indexResources from '@/lib/actions/indexResources';
 import toast from 'react-hot-toast';
 import { generateSponsorship } from '../actions/generateSponsorship';
+import { startIndexationWorker } from '@/lib/actions/startIndexationWorker';
+import { IndexationFollower } from '@/lib/indexationScript/IndexationFollower';
 
 interface NavbarProps {
   profile: Profile;
@@ -58,6 +60,12 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
     });
   };
 
+  const handleIndexation = () => {
+    startIndexationWorker().then(() => {
+      toast.loading(IndexationFollower, { id: 'indexation' });
+    });
+  };
+
   return (
     <div className='navbar bg-base-200'>
       <div className='flex-1'>
@@ -102,6 +110,9 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
             )}
             <li>
               <Link href='/logout'>Log out</Link>
+            </li>
+            <li>
+              <button onClick={() => handleIndexation()}>Launch worker</button>
             </li>
           </ul>
         </div>

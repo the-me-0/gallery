@@ -26,13 +26,14 @@ const register = async () => {
   }
 
   await initFolders();
+  await initDBWorkers();
 
   console.log('Gallery project initialized. Enjoy !');
   console.log('=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~');
 };
 
 const initFolders = async () => {
-  const neededFolders = ['resources', 'resources-private', 'resources-thumbnails'];
+  const neededFolders = ['resources', 'resources-private'];
 
   for (const folder of neededFolders) {
     try {
@@ -47,6 +48,30 @@ const initFolders = async () => {
   }
 
   console.log('Folders initialized.');
-}
+};
+
+const initDBWorkers = async () => {
+  const indexationWorker = await db.worker.findUnique({
+    where: {
+      name: 'indexation',
+    },
+  });
+
+  if (!indexationWorker) {
+    console.log('No indexation worker found in DB. Creating a new one...');
+
+    await db.worker.create({
+      data: {
+        name: 'indexation',
+        state: 'IDLE',
+        progress: 0,
+      },
+    });
+
+    console.log('Indexation worker created.');
+  } else {
+    console.log('Indexation worker already found in DB. Skipping...');
+  }
+};
 
 export { register };

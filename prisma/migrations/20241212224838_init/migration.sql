@@ -4,6 +4,9 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 -- CreateEnum
 CREATE TYPE "ResourceType" AS ENUM ('IMAGE', 'VIDEO');
 
+-- CreateEnum
+CREATE TYPE "WorkerState" AS ENUM ('IDLE', 'BUSY');
+
 -- CreateTable
 CREATE TABLE "Profile" (
     "id" TEXT NOT NULL,
@@ -47,6 +50,16 @@ CREATE TABLE "ResourceThumbnail" (
     CONSTRAINT "ResourceThumbnail_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Worker" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "state" "WorkerState" NOT NULL,
+    "progress" INTEGER NOT NULL,
+
+    CONSTRAINT "Worker_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_username_key" ON "Profile"("username");
 
@@ -55,6 +68,9 @@ CREATE UNIQUE INDEX "Sponsorship_key_key" ON "Sponsorship"("key");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Resource_thumbnailId_key" ON "Resource"("thumbnailId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Worker_name_key" ON "Worker"("name");
 
 -- AddForeignKey
 ALTER TABLE "Sponsorship" ADD CONSTRAINT "Sponsorship_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE SET NULL ON UPDATE CASCADE;
