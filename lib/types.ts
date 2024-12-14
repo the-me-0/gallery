@@ -1,11 +1,11 @@
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'];
 const videoExtensions = ['.mp4', '.avi', '.mov', '.mkv'];
 
-type PreferenceName = 'gallery-pref_columnResourceLayout';
+type PreferenceName = 'gallery-pref_columnResourceLayout' | 'gallery-pref_columnResourceSize';
 
 interface Preference {
   preferenceName: PreferenceName;
-  value: boolean;
+  value: boolean | number;
 }
 
 interface PreferencesContextType {

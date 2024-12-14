@@ -18,8 +18,14 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement | null => {
   const [columnWidth, setColumnWidth] = useState(200);
 
   useEffect(() => {
+    const sizePreference = preferences.find(
+      (preference) =>
+        preference.preferenceName === 'gallery-pref_columnResourceSize'
+    );
+
     const containerWidth = window.innerWidth;
-    const minColumnWidth = 250;
+    const minColumnWidth = sizePreference?.value || 250;
+    // @ts-ignore
     const columns = Math.floor(containerWidth / minColumnWidth);
 
     const totalGap = gap * (columns + 1);
@@ -28,7 +34,7 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement | null => {
     setColumnWidth(columnWidth);
 
     setColumnCount(columns);
-  }, []);
+  }, [preferences]);
 
   if (!columnCount) return null;
 
