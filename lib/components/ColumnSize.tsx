@@ -41,16 +41,16 @@ const ColumnSize = (): ReactElement => {
   };
 
   return (
-    <label className='flex cursor-pointer gap-2'>
+    <label className='flex cursor-pointer gap-2 items-center'>
       <Columns4 />
       <input
         type="range"
         min={minColumnSize}
         max={maxColumnSize}
-        step={10} // Ajuste par pas de 10
+        step={10}
         value={columnSize}
         onChange={handleValueChange}
-        className="w-full cursor-pointer accent-primary"
+        className="range range-xs w-32 cursor-pointer range-primary"
       />
       <Columns2 />
     </label>

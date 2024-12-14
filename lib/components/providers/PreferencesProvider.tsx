@@ -11,8 +11,6 @@ import { PreferencesContextType, Preference } from '@/lib/types';
 
 // TODO: Add DB support for preferences (in case a user switch support, his preferences are not lost)
 
-// TODO: add a "usePreference(preferenceName: string): Preference" hook to ease the load on components
-
 export const PreferencesContext = createContext<
   PreferencesContextType | undefined
 >(undefined);
@@ -34,10 +32,10 @@ export default function PreferencesProvider({
     itemKeys
       .filter((key: string) => key.startsWith('gallery-pref_'))
       .forEach((key: string) => {
-        // @ts-ignore (we assured that key starts with the right string, but its content might not be right. We have to ignore this warning)
         allPreferences.push({
+          // @ts-ignore (we assured that key starts with the right string, but its content might not be right. We have to ignore this warning)
           preferenceName: key,
-          value: items[key] === 'true',
+          value: JSON.parse(items[key]),
         });
       });
 

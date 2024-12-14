@@ -18,6 +18,8 @@ const ResourcesGridWrapper = ({ resources }: Props): ReactElement | null => {
   const [columnWidth, setColumnWidth] = useState(200);
 
   useEffect(() => {
+    if (preferences === undefined) return;
+
     const sizePreference = preferences.find(
       (preference) =>
         preference.preferenceName === 'gallery-pref_columnResourceSize'
