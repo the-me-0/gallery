@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Resource, ResourceThumbnail } from '@prisma/client';
 import { usePreferences } from '@/lib/components/providers/PreferencesProvider';
 import { ResourcesColumn } from '@/lib/components/ResourcesColumn';
@@ -12,49 +12,28 @@ interface Props {
 
 const gap = 10; // pixels, the gap between columns
 
-const ResourcesGridWrapper = ({ resources }: Props): ReactElement => {
+const ResourcesGridWrapper = ({ resources }: Props): ReactElement | null => {
   const { preferences } = usePreferences();
-  const [columnCount, setColumnCount] = useState(4);
+  const [columnCount, setColumnCount] = useState<number | null>(null);
   const [columnWidth, setColumnWidth] = useState(200);
-  const containerRef = useRef(null);
 
   useEffect(() => {
-    const calculateColumns = () => {
-      if (containerRef.current) {
-        // @ts-ignore
-        const containerWidth = containerRef.current.offsetWidth;
-        const minColumnWidth = 250;
-        const columns = Math.floor(containerWidth / minColumnWidth);
+    const containerWidth = window.innerWidth;
+    const minColumnWidth = 250;
+    const columns = Math.floor(containerWidth / minColumnWidth);
 
-        const totalGap = gap * (columns + 1);
-        const columnWidth = (containerWidth - totalGap) / columns;
+    const totalGap = gap * (columns + 1);
+    const columnWidth = (containerWidth - totalGap) / columns;
 
-        setColumnWidth(columnWidth);
+    setColumnWidth(columnWidth);
 
-        setColumnCount(columns);
-      }
-    };
-
-    const resizeObserver = new ResizeObserver(() => {
-      calculateColumns();
-    });
-
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-      calculateColumns();
-    }
-
-    const containerRefCurrent = containerRef.current;
-
-    return () => {
-      if (containerRefCurrent) {
-        resizeObserver.unobserve(containerRefCurrent);
-      }
-    };
+    setColumnCount(columns);
   }, []);
 
+  if (!columnCount) return null;
+
   return (
-    <div className='w-full' ref={containerRef}>
+    <div className='w-full'>
       {!preferences.find(
         (pref) => pref.preferenceName === 'gallery-pref_columnResourceLayout'
       )?.value ? (

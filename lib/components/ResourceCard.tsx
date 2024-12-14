@@ -22,6 +22,7 @@ const ResourceCard = ({
 
   // ROLE : pause the gif. Removes the event listener to avoid being called once this very job is done.
   const pausegif = useCallback(() => {
+    if (resource.type !== ResourceType.VIDEO) return;
     if (!img.current) return;
     img.current.removeEventListener('load', pausegif);
     let canvasElement = document.createElement('canvas');
@@ -80,8 +81,8 @@ const ResourceCard = ({
       // onTouchStart={() => playPauseGif()}
     >
       <figure
-        className='relative rounded-b-2xl'
-        style={{ aspectRatio: forcedAspectRatio }}
+        className='relative rounded-b-2xl hw-full'
+        // style={{ aspectRatio: forcedAspectRatio }}
       >
         <GImage
           src={resource.thumbnail.location}
