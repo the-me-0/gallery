@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import React, { useTransition } from 'react';
 import { Profile } from '@prisma/client';
-import indexResources from '@/lib/actions/indexResources';
 import toast from 'react-hot-toast';
 import { generateSponsorship } from '../actions/generateSponsorship';
 import { startIndexationWorker } from '@/lib/actions/startIndexationWorker';
@@ -14,32 +13,8 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ profile }) => {
-  const [isPendingIndex, startTransitionIndex] = useTransition();
   const [isPendingSponsorshipLink, startTransitionSponsorshipLink] =
     useTransition();
-
-  const handleIndex = () => {
-    startTransitionIndex(() => {
-      indexResources()
-        .then((newResources) => {
-          console.log(
-            'Successfully indexed resources:',
-            newResources.map((r) => r.name)
-          );
-
-          toast.success('Successfully indexed resources. 🎉');
-
-          setTimeout(() => {
-            toast('Refresh to see the changes.', {
-              icon: '🔄',
-            });
-          }, 1000);
-        })
-        .catch((error) => {
-          console.error('Error indexing resources:', error);
-        });
-    });
-  };
 
   const handleSponsorshipLinkCreation = () => {
     startTransitionSponsorshipLink(() => {
@@ -60,6 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
     });
   };
 
+  // TODO: handle disable button when indexation is in progress
   const handleIndexation = () => {
     startIndexationWorker().then(() => {
       toast.loading(IndexationFollower, { id: 'indexation' });
@@ -103,16 +79,13 @@ const Navbar: React.FC<NavbarProps> = ({ profile }) => {
             )}
             {profile.role === 'ADMIN' && (
               <li>
-                <button disabled={isPendingIndex} onClick={() => handleIndex()}>
+                <button onClick={() => handleIndexation()}>
                   Index resources
                 </button>
               </li>
             )}
             <li>
               <Link href='/logout'>Log out</Link>
-            </li>
-            <li>
-              <button onClick={() => handleIndexation()}>Launch worker</button>
             </li>
           </ul>
         </div>
