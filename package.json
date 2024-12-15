@@ -9,8 +9,10 @@
     "lint": "next lint",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
+    "db:start": "dotenv -e .env.local -- docker compose up -d",
+    "db:stop": "dotenv -e .env.local -- docker compose down",
     "db:purge": "dotenv -e .env.local -- npx prisma db push --force-reset",
-    "migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev"
+    "db:migrate": "dotenv -e .env.local -- npx prisma migrate dev"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.3",
