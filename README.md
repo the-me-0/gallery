@@ -2,22 +2,30 @@
 
 A gallery web app, with similar technologies as my last project [Groove](https://github.com/the-me-0/groove) (NextJS)
 
-## TODO
+It uses updated versions of the technologies used in Groove, and is very much up to date with my latest coding skills.
 
-- generate thumbnails in webp
+## Dependencies
 
-# ESLint & Prettier
+This project uses the following dependencies :
+- **FFmpeg** : I use FFmpeg to generate thumbnails for the videos. I don't know for unix systems, but on windows it's as simple as running `winget install "FFmpeg (Essentials Build)"` in a powershell. You might as well need to set up some PATH variables such as `FFMPEG_PATH` and `FFPROBE_PATH`.
+- **Docker** : docker is used in order to run the database.
+
+## How to start
+
+1. Clone the repository
+2. Run `npm install` to install the dependencies
+3. Run `npm run db:start` to start the database
+4. *only at first start* Run `npm run db:migrate` to create the tables
+5. Run `npm run dev` to start the development server
+6. Go to `http://localhost:3000` to see the app
+
+## ESLint & Prettier
 
 This project is using ESLint and prettier, and is using the following packages to do so :
 
 - prettier-plugin-tailwindcss,
 - eslint-config-prettier
   ESlint was provided by Next.js during project init.
-
-## FFmpeg dependency
-
-I don't know for unix systems, but on windows it's as simple as running `winget install "FFmpeg (Essentials Build)"`
-in a powershell.
 
 ## Licence
 
